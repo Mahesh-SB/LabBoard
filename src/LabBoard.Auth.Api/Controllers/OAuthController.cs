@@ -81,21 +81,27 @@ public class OAuthController(
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Token([FromForm] TokenRequest request)
     {
-        if (!request.GrantType.Equals("authorization_code", StringComparison.OrdinalIgnoreCase))
-            return BadRequest(new { error = "unsupported_grant_type" });
+        if (request.GrantType.Equals("authorization_code", StringComparison.OrdinalIgnoreCase))
+            return await HandleAuthorizationCode(request);
 
+        if (request.GrantType.Equals("client_credentials", StringComparison.OrdinalIgnoreCase))
+            return await HandleClientCredentials(request);
+
+        return BadRequest(new { error = "unsupported_grant_type" });
+    }
+
+    private async Task<IActionResult> HandleAuthorizationCode(TokenRequest request)
+    {
         if (string.IsNullOrWhiteSpace(request.Code) ||
             string.IsNullOrWhiteSpace(request.ClientId) ||
             string.IsNullOrWhiteSpace(request.ClientSecret) ||
             string.IsNullOrWhiteSpace(request.RedirectUri))
             return BadRequest(new { error = "invalid_request", description = "Missing required parameters." });
 
-        // Validate client credentials
         var client = await clientAppService.GetByClientIdAsync(request.ClientId);
         if (client is null || !client.IsActive || client.ClientSecret != request.ClientSecret)
             return Unauthorized(new { error = "invalid_client" });
 
-        // Consume the auth code — validates expiry, single-use, client + redirect match
         ConsumedAuthCode consumed;
         try
         {
@@ -111,6 +117,22 @@ public class OAuthController(
             return BadRequest(new { error = "invalid_grant", description = "User not found." });
 
         return Ok(tokenService.Generate(user, client, consumed.Scopes));
+    }
+
+    private async Task<IActionResult> HandleClientCredentials(TokenRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.ClientId) ||
+            string.IsNullOrWhiteSpace(request.ClientSecret))
+            return BadRequest(new { error = "invalid_request", description = "Missing client_id or client_secret." });
+
+        var client = await clientAppService.GetByClientIdAsync(request.ClientId);
+        if (client is null || !client.IsActive || client.ClientSecret != request.ClientSecret)
+            return Unauthorized(new { error = "invalid_client" });
+
+        if (!client.GrantTypes.Contains("client_credentials", StringComparer.OrdinalIgnoreCase))
+            return BadRequest(new { error = "unauthorized_client", description = "This client is not authorized for client_credentials grant." });
+
+        return Ok(tokenService.GenerateClientToken(client));
     }
 
     private static string BuildRedirectUri(string redirectUri, string code, string state)

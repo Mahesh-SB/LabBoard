@@ -17,11 +17,25 @@ public class ClientAppService(IWebHostEnvironment env) : IClientAppService
         if (apps.Any(a => a.AppName.Equals(request.AppName, StringComparison.OrdinalIgnoreCase)))
             throw new InvalidOperationException("An app with this name already exists.");
 
+        var allowedGrantTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            { "authorization_code", "refresh_token", "client_credentials" };
+
+        var unknownGrants = request.GrantTypes.Where(g => !allowedGrantTypes.Contains(g)).ToList();
+        if (unknownGrants.Count > 0)
+            throw new InvalidOperationException($"Unknown grant type(s): {string.Join(", ", unknownGrants)}.");
+
+        if (request.GrantTypes.Count == 0)
+            throw new InvalidOperationException("At least one grant type is required.");
+
         var hasRefreshToken = request.GrantTypes.Contains("refresh_token", StringComparer.OrdinalIgnoreCase);
         var hasAuthCode = request.GrantTypes.Contains("authorization_code", StringComparer.OrdinalIgnoreCase);
+        var hasClientCredentials = request.GrantTypes.Contains("client_credentials", StringComparer.OrdinalIgnoreCase);
 
         if (hasRefreshToken && !hasAuthCode)
             throw new InvalidOperationException("refresh_token grant requires authorization_code grant to be included.");
+
+        if (hasClientCredentials && (hasAuthCode || hasRefreshToken))
+            throw new InvalidOperationException("client_credentials cannot be combined with authorization_code or refresh_token grants.");
 
         var additionalScopes = request.AdditionalOpenIdScopes;
         if (hasRefreshToken && hasAuthCode && !additionalScopes.Contains(OpenIdScope.OfflineAccess))

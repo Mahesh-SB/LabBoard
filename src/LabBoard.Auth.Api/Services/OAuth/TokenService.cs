@@ -52,5 +52,31 @@ public class TokenService : ITokenService, IDisposable
         };
     }
 
+    public TokenResponse GenerateClientToken(ClientAppResponse client)
+    {
+        var scopes = client.ApiScopes.Select(s => s.ToString().ToLowerInvariant()).ToList();
+
+        var claims = new[]
+        {
+            new Claim("scope", string.Join(" ", scopes))
+        };
+
+        var token = new JwtSecurityToken(
+            issuer:             _jwt.Issuer,
+            audience:           _jwt.Audience,
+            claims:             claims,
+            notBefore:          DateTime.UtcNow,
+            expires:            DateTime.UtcNow.AddSeconds(client.TokenExpiry),
+            signingCredentials: _credentials);
+
+        return new TokenResponse
+        {
+            AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
+            TokenType   = "Bearer",
+            ExpiresIn   = client.TokenExpiry,
+            Scope       = string.Join(" ", scopes)
+        };
+    }
+
     public void Dispose() => _rsa.Dispose();
 }
