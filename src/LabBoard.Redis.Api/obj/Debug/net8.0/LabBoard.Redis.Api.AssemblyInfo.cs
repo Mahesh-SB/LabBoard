@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LabBoard.Redis.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8da8cdbfbaa08cd1a5680b401ee039f5831fc8a3")]
 [assembly: System.Reflection.AssemblyProductAttribute("LabBoard.Redis.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LabBoard.Redis.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

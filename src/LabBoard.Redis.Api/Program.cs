@@ -1,4 +1,5 @@
 using Prometheus;
+using Scalar.AspNetCore;
 using StackExchange.Redis;
 using LabBoard.Redis.Api.Services;
 
@@ -26,7 +27,9 @@ var app = builder.Build();
 
 // ── Middleware pipeline ───────────────────────────────────────────────────
 app.UseSwagger();
-app.UseSwaggerUI();
+app.MapScalarApiReference(options =>
+    options.WithTitle("LabBoard Redis API")
+           .WithOpenApiRoutePattern("/swagger/v1/swagger.json"));
 
 // prometheus-net: automatically records HTTP request duration + count
 app.UseHttpMetrics();

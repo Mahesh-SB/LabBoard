@@ -31,4 +31,5 @@ C:\D Drive\Project\BackEND\LabBoard\src\LabBoard.TicketMaster.Api\obj\Debug\net9
 C:\D Drive\Project\BackEND\LabBoard\src\LabBoard.TicketMaster.Api\obj\Debug\net9.0\LabBoard.TicketMaster.Api.pdb
 C:\D Drive\Project\BackEND\LabBoard\src\LabBoard.TicketMaster.Api\obj\Debug\net9.0\LabBoard.TicketMaster.Api.genruntimeconfig.cache
 C:\D Drive\Project\BackEND\LabBoard\src\LabBoard.TicketMaster.Api\obj\Debug\net9.0\ref\LabBoard.TicketMaster.Api.dll
-C:\D Drive\Project\BackEND\LabBoard\src\LabBoard.TicketMaster.Api\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+C:\D Drive\Project\BackEND\LabBoard\src\LabBoard.TicketMaster.Api\bin\Debug\net9.0\Scalar.AspNetCore.dll
+C:\D Drive\Project\BackEND\LabBoard\src\LabBoard.TicketMaster.Api\obj\Debug\net9.0\LabBoard.TicketMaster.Api.sourcelink.json

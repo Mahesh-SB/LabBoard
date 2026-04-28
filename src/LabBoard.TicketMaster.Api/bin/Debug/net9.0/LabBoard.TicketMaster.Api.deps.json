@@ -8,7 +8,8 @@
     ".NETCoreApp,Version=v9.0": {
       "LabBoard.TicketMaster.Api/1.0.0": {
         "dependencies": {
-          "Microsoft.AspNetCore.OpenApi": "9.0.4"
+          "Microsoft.AspNetCore.OpenApi": "9.0.4",
+          "Scalar.AspNetCore": "2.14.6"
         },
         "runtime": {
           "LabBoard.TicketMaster.Api.dll": {}
@@ -30,6 +31,14 @@
           "lib/netstandard2.0/Microsoft.OpenApi.dll": {
             "assemblyVersion": "1.6.17.0",
             "fileVersion": "1.6.17.0"
+          }
+        }
+      },
+      "Scalar.AspNetCore/2.14.6": {
+        "runtime": {
+          "lib/net9.0/Scalar.AspNetCore.dll": {
+            "assemblyVersion": "2.14.6.0",
+            "fileVersion": "2.14.6.0"
           }
         }
       }
@@ -54,6 +63,13 @@
       "sha512": "sha512-Le+kehlmrlQfuDFUt1zZ2dVwrhFQtKREdKBo+rexOwaCoYP0/qpgT9tLxCsZjsgR5Itk1UKPcbgO+FyaNid/bA==",
       "path": "microsoft.openapi/1.6.17",
       "hashPath": "microsoft.openapi.1.6.17.nupkg.sha512"
+    },
+    "Scalar.AspNetCore/2.14.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Q2JlF4FNSa3ooMbelv8WmP0rJCZHuQ6AJIB4tQfubcqbH3pgKIpsYBhXRzVECZ3erOZD8FmussrUpdbyVCNXYw==",
+      "path": "scalar.aspnetcore/2.14.6",
+      "hashPath": "scalar.aspnetcore.2.14.6.nupkg.sha512"
     }
   }
 }

@@ -3,6 +3,7 @@ using LabBoard.Auth.Api.Middleware;
 using LabBoard.Auth.Api.Services.User;
 using LabBoard.Auth.Api.Services.Client;
 using LabBoard.Auth.Api.Services.OAuth;
+using Scalar.AspNetCore;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,6 +33,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference(options =>
+        options.WithTitle("LabBoard Auth API"));
 }
 
 app.UseMiddleware<RequestTraceMiddleware>();

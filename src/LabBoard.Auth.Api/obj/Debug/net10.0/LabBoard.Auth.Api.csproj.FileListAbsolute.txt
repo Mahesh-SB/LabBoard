@@ -40,3 +40,4 @@ C:\D Drive\Project\BackEND\LabBoard\src\LabBoard.Auth.Api\bin\Debug\net10.0\Micr
 C:\D Drive\Project\BackEND\LabBoard\src\LabBoard.Auth.Api\bin\Debug\net10.0\System.IdentityModel.Tokens.Jwt.dll
 C:\D Drive\Project\BackEND\LabBoard\src\LabBoard.Auth.Api\bin\Debug\net10.0\Database\authCodeStore.json
 C:\D Drive\Project\BackEND\LabBoard\src\LabBoard.Auth.Api\obj\Debug\net10.0\LabBoard.Auth.Api.sourcelink.json
+C:\D Drive\Project\BackEND\LabBoard\src\LabBoard.Auth.Api\bin\Debug\net10.0\Scalar.AspNetCore.dll

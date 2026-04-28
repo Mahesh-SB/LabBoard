@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <!-- Redis client -->
+    <PackageReference Include="Scalar.AspNetCore" Version="2.14.6" />
     <PackageReference Include="StackExchange.Redis" Version="2.8.16" />
     <!-- Prometheus metrics middleware + /metrics endpoint -->
     <PackageReference Include="prometheus-net.AspNetCore" Version="8.2.1" />
