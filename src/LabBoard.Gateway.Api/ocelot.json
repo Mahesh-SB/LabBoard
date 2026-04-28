@@ -43,6 +43,17 @@
       "DownstreamHostAndPorts": [
         { "Host": "labboard-observability", "Port": 8080 }
       ]
+    },
+
+    // ── UserManagement API (/usermanagement/{everything} → labboard-usermanagement-api:8080/{everything}) ──
+    {
+      "UpstreamPathTemplate": "/usermanagement/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS" ],
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "labboard-usermanagement-api", "Port": 8080 }
+      ]
     }
 
   ],

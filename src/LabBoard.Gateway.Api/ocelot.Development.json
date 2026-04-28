@@ -43,6 +43,17 @@
       "DownstreamHostAndPorts": [
         { "Host": "localhost", "Port": 5001 }
       ]
+    },
+
+    // ── UserManagement API (/usermanagement/{everything} → localhost:5400/{everything}) ──
+    {
+      "UpstreamPathTemplate": "/usermanagement/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS" ],
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "localhost", "Port": 5400 }
+      ]
     }
 
   ],
