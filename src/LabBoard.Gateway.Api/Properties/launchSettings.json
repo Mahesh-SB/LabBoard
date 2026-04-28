@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "LabBoard.Gateway.Api": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "openapi/v1.json",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:7200;http://localhost:5200"
+    }
+  }
+}

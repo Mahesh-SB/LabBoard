@@ -1,0 +1,109 @@
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
+using LabBoard.Auth.Api.Models.User;
+using UserEntity = LabBoard.Auth.Api.Entities.User;
+
+namespace LabBoard.Auth.Api.Services.User;
+
+public class UserService(IWebHostEnvironment env) : IUserService
+{
+    private readonly string _storePath = Path.Combine(env.ContentRootPath, "Database", "userStore.json");
+    private readonly JsonSerializerOptions _jsonOptions = new() { WriteIndented = true };
+
+    public async Task<UserResponse> RegisterAsync(UserRegisterRequest request)
+    {
+        var users = await LoadAsync();
+
+        if (users.Any(u => u.Email.Equals(request.Email, StringComparison.OrdinalIgnoreCase)))
+            throw new InvalidOperationException("A user with this email already exists.");
+
+        var user = new UserEntity
+        {
+            FullName = request.FullName,
+            Gender = request.Gender,
+            Age = request.Age,
+            Email = request.Email.ToLowerInvariant(),
+            Phone = request.Phone,
+            PasswordHash = HashPassword(request.Password),
+            Role = request.Role
+        };
+
+        users.Add(user);
+        await SaveAsync(users);
+
+        return ToResponse(user);
+    }
+
+    public async Task<UserResponse?> GetByIdAsync(Guid id)
+    {
+        var users = await LoadAsync();
+        var user = users.FirstOrDefault(u => u.Id == id);
+        return user is null ? null : ToResponse(user);
+    }
+
+    public async Task<UserResponse?> GetByEmailAsync(string email)
+    {
+        var users = await LoadAsync();
+        var user = users.FirstOrDefault(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+        return user is null ? null : ToResponse(user);
+    }
+
+    public async Task<IEnumerable<UserResponse>> GetAllAsync()
+    {
+        var users = await LoadAsync();
+        return users.Select(ToResponse);
+    }
+
+    public async Task<UserResponse?> ValidateCredentialsAsync(string email, string password)
+    {
+        var users = await LoadAsync();
+        var hash = HashPassword(password);
+        var user = users.FirstOrDefault(u =>
+            u.Email.Equals(email, StringComparison.OrdinalIgnoreCase) &&
+            u.PasswordHash == hash);
+        return user is null ? null : ToResponse(user);
+    }
+
+    public async Task<bool> DeleteAsync(Guid id)
+    {
+        var users = await LoadAsync();
+        var user = users.FirstOrDefault(u => u.Id == id);
+        if (user is null) return false;
+
+        users.Remove(user);
+        await SaveAsync(users);
+        return true;
+    }
+
+    private async Task<List<UserEntity>> LoadAsync()
+    {
+        if (!File.Exists(_storePath)) return [];
+        var json = await File.ReadAllTextAsync(_storePath);
+        return JsonSerializer.Deserialize<List<UserEntity>>(json) ?? [];
+    }
+
+    private async Task SaveAsync(List<UserEntity> users)
+    {
+        var json = JsonSerializer.Serialize(users, _jsonOptions);
+        await File.WriteAllTextAsync(_storePath, json);
+    }
+
+    private static string HashPassword(string password)
+    {
+        var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(password));
+        return Convert.ToHexString(bytes).ToLowerInvariant();
+    }
+
+    private static UserResponse ToResponse(UserEntity user) => new()
+    {
+        Id = user.Id,
+        FullName = user.FullName,
+        Gender = user.Gender,
+        Age = user.Age,
+        Email = user.Email,
+        Phone = user.Phone,
+        Role = user.Role,
+        CreatedAt = user.CreatedAt
+    };
+}

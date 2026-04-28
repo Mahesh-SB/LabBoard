@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Redis client -->
+    <PackageReference Include="StackExchange.Redis" Version="2.8.16" />
+    <!-- Prometheus metrics middleware + /metrics endpoint -->
+    <PackageReference Include="prometheus-net.AspNetCore" Version="8.2.1" />
+    <!-- Redis health check -->
+    <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="8.0.1" />
+    <!-- Swagger UI -->
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
+  </ItemGroup>
+
+</Project>

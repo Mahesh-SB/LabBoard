@@ -1,0 +1,21 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+
+  - job_name: 'labboard-redis-api'
+    static_configs:
+      - targets: ['labboard-redis-api:8080']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  - job_name: 'labboard-observability'
+    static_configs:
+      - targets: ['labboard-observability:8080']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']

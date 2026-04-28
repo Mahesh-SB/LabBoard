@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet build *)",
+      "Bash(dotnet new *)",
+      "Bash(rm -rf \"C:/D Drive/Project/BackEND/LabBoard/src/LabBoard.Auth.Api/Controllers\")",
+      "Bash(mkdir -p \"C:/D Drive/Project/BackEND/LabBoard/src/LabBoard.Auth.Api/Controllers\" \"C:/D Drive/Project/BackEND/LabBoard/src/LabBoard.Auth.Api/Models\" \"C:/D Drive/Project/BackEND/LabBoard/src/LabBoard.Auth.Api/Services\" \"C:/D Drive/Project/BackEND/LabBoard/src/LabBoard.Auth.Api/Database\")",
+      "Bash(dotnet add *)",
+      "Bash(dotnet sln *)",
+      "Bash(ng version *)",
+      "Bash(ng new *)",
+      "Bash(cmd *)",
+      "Bash(ng generate *)",
+      "Bash(ng build *)",
+      "Bash(node -e ' *)",
+      "Bash(node -e \"const f=require\\('./angular.json'\\); console.log\\(JSON.stringify\\(f.projects['labboard-auth'].architect.build.options.assets, null, 2\\)\\)\")",
+      "mcp__ide__getDiagnostics",
+      "Bash(npm start *)",
+      "PowerShell(Rename-Item *)",
+      "Bash(dotnet restore *)",
+      "Bash(npx ng *)",
+      "PowerShell([System.IO.File]::ReadAllText\\(\"C:\\\\D Drive\\\\Project\\\\BackEND\\\\LabBoard\\\\public.key\"\\))"
+    ]
+  }
+}

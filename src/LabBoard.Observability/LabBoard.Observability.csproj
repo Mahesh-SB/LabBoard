@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Redis client — needed to call INFO commands -->
+    <PackageReference Include="StackExchange.Redis" Version="2.8.16" />
+    <!-- Prometheus metrics + /metrics endpoint -->
+    <PackageReference Include="prometheus-net.AspNetCore" Version="8.2.1" />
+    <!-- Health check extension for Redis -->
+    <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="8.0.1" />
+  </ItemGroup>
+
+</Project>

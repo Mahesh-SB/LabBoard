@@ -1,0 +1,139 @@
+<div class="stage-wrapper">
+
+  <!-- Dark overlay so card stays readable -->
+  <div class="bg-overlay"></div>
+
+  <!-- Toast notification -->
+  <div *ngIf="toast" class="toast" [class.toast-success]="toast.type === 'success'" [class.toast-error]="toast.type === 'error'">
+    <span class="toast-icon">{{ toast.type === 'success' ? '✅' : '⚠️' }}</span>
+    <span class="toast-message">{{ toast.message }}</span>
+  </div>
+
+  <!-- Flash light rigs — positioned around the screen like stage rigs -->
+  <div class="flash flash-red-tl"></div>
+  <div class="flash flash-blue-tc"></div>
+  <div class="flash flash-green-tr"></div>
+  <div class="flash flash-amber-bl"></div>
+  <div class="flash flash-purple-br"></div>
+  <div class="flash flash-cyan-ml"></div>
+  <div class="flash flash-white-mr"></div>
+  <div class="flash flash-pink-bc"></div>
+
+  <!-- Centered ticket card -->
+  <div class="ticket-card">
+
+    <!-- LEFT — event info panel -->
+    <div class="event-panel">
+      <div class="admit-badge">🎵 ADMIT ONE</div>
+
+      <div class="event-title-block">
+        <h1>{{ eventName }}</h1>
+        <p class="event-sub">The biggest music festival of the year</p>
+      </div>
+
+      <div class="event-details">
+        <div class="detail-row">
+          <span class="detail-icon">📅</span>
+          <div>
+            <span class="detail-label">Date</span>
+            <span class="detail-value">{{ eventDate }}</span>
+          </div>
+        </div>
+        <div class="detail-row">
+          <span class="detail-icon">📍</span>
+          <div>
+            <span class="detail-label">Venue</span>
+            <span class="detail-value">{{ eventVenue }}</span>
+          </div>
+        </div>
+        <div class="detail-row">
+          <span class="detail-icon">🎟️</span>
+          <div>
+            <span class="detail-label">Price per seat</span>
+            <span class="detail-value price">{{ pricePerSeat }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stub-divider">
+        <span class="stub-circle left"></span>
+        <span class="stub-line"></span>
+        <span class="stub-circle right"></span>
+      </div>
+
+      <p class="stub-note">Present this ticket at the gate · No refunds</p>
+    </div>
+
+    <!-- RIGHT — booking form -->
+    <div class="form-panel">
+      <div class="form-header">
+        <span class="form-icon">🎤</span>
+        <div>
+          <h2>Book Your Tickets</h2>
+          <p>Secure your spot at the event</p>
+        </div>
+      </div>
+
+      <form class="ticket-form" (ngSubmit)="onBook()">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="personName">Person Name</label>
+            <div class="input-wrap">
+              <span class="inp-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </span>
+              <input id="personName" type="text" name="personName"
+                     placeholder="John Doe" [(ngModel)]="form.personName" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="age">Age</label>
+            <div class="input-wrap">
+              <span class="inp-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/>
+                  <line x1="8"  y1="2" x2="8"  y2="6"/>
+                  <line x1="3"  y1="10" x2="21" y2="10"/>
+                </svg>
+              </span>
+              <input id="age" type="number" name="age"
+                     placeholder="25" min="1" max="120" [(ngModel)]="form.age" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="seats">No of Seats</label>
+          <div class="input-wrap select-wrap">
+            <span class="inp-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/>
+                <path d="M12 22V7"/>
+                <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+                <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+              </svg>
+            </span>
+            <select id="seats" name="seats" [(ngModel)]="form.seats">
+              <option value="" disabled>Select seats</option>
+              <option *ngFor="let n of seatOptions" [value]="n">
+                {{ n }} Seat{{ n > 1 ? 's' : '' }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-book" [disabled]="isLoading">
+          {{ isLoading ? 'Booking...' : '🎟️ Confirm Booking' }}
+        </button>
+
+      </form>
+    </div>
+
+  </div>
+</div>

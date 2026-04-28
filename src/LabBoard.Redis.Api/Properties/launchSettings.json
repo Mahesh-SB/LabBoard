@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "LabBoard.Redis.Api": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:9064;http://localhost:9066"
+    }
+  }
+}

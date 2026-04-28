@@ -1,0 +1,182 @@
+[
+  {
+    "Code": "KnRL2p_273IWM1S2AgE-8PY-wr6KpTj6pnWyKGpuZJI",
+    "ClientId": "e4a6c8f0b2d4e6a8c0f2b4d6e8a0c2f4",
+    "UserId": "058ebd09-806a-450c-9415-8fc39ec282b2",
+    "RedirectUri": "http://localhost:5200/oauth/callback",
+    "Scopes": [
+      "openid",
+      "profile",
+      "email"
+    ],
+    "State": "http://localhost:4200/tickets/book",
+    "ExpiresAt": "2026-04-25T14:07:53.6537966Z",
+    "IsUsed": false,
+    "CreatedAt": "2026-04-25T13:57:53.6532366Z"
+  },
+  {
+    "Code": "yq3a2JZGbx1_uzj8Kv4eUaQduoSLEQGE-o9dUBlKQcw",
+    "ClientId": "e4a6c8f0b2d4e6a8c0f2b4d6e8a0c2f4",
+    "UserId": "058ebd09-806a-450c-9415-8fc39ec282b2",
+    "RedirectUri": "http://localhost:5200/oauth/callback",
+    "Scopes": [
+      "openid",
+      "profile",
+      "email"
+    ],
+    "State": "http://localhost:4200/tickets/book",
+    "ExpiresAt": "2026-04-25T14:17:39.8201268Z",
+    "IsUsed": false,
+    "CreatedAt": "2026-04-25T14:07:39.8187212Z"
+  },
+  {
+    "Code": "2YnCCZZxQlJFYzbvse-DP3JRbejpwdQ60a-1iL3ldKg",
+    "ClientId": "e4a6c8f0b2d4e6a8c0f2b4d6e8a0c2f4",
+    "UserId": "058ebd09-806a-450c-9415-8fc39ec282b2",
+    "RedirectUri": "http://localhost:5200/oauth/callback",
+    "Scopes": [
+      "openid",
+      "profile",
+      "email"
+    ],
+    "State": "http://localhost:4200/tickets/book",
+    "ExpiresAt": "2026-04-25T14:28:50.3842589Z",
+    "IsUsed": false,
+    "CreatedAt": "2026-04-25T14:18:50.3832183Z"
+  },
+  {
+    "Code": "s5t2z2j-hS-8Ze1xbyprWGXZjfp65qnsbl3p3iVA1_Q",
+    "ClientId": "e4a6c8f0b2d4e6a8c0f2b4d6e8a0c2f4",
+    "UserId": "058ebd09-806a-450c-9415-8fc39ec282b2",
+    "RedirectUri": "http://localhost:5200/oauth/callback",
+    "Scopes": [
+      "openid",
+      "profile",
+      "email"
+    ],
+    "State": "http://localhost:4200/tickets/book",
+    "ExpiresAt": "2026-04-25T17:11:26.3304895Z",
+    "IsUsed": true,
+    "CreatedAt": "2026-04-25T17:01:26.329281Z"
+  },
+  {
+    "Code": "KaaLFI_6iiTOnlarweA1JLUeQI-bSILh03WgBL_c2aA",
+    "ClientId": "e4a6c8f0b2d4e6a8c0f2b4d6e8a0c2f4",
+    "UserId": "058ebd09-806a-450c-9415-8fc39ec282b2",
+    "RedirectUri": "http://localhost:5200/oauth/callback",
+    "Scopes": [
+      "openid",
+      "profile",
+      "email"
+    ],
+    "State": "http://localhost:4200/tickets/book",
+    "ExpiresAt": "2026-04-25T17:14:41.3057037Z",
+    "IsUsed": true,
+    "CreatedAt": "2026-04-25T17:04:41.3041237Z"
+  },
+  {
+    "Code": "_Awys0aLOBqjLEBe_uTgUmhXsyBV-eH1snFk-trqLdk",
+    "ClientId": "e4a6c8f0b2d4e6a8c0f2b4d6e8a0c2f4",
+    "UserId": "058ebd09-806a-450c-9415-8fc39ec282b2",
+    "RedirectUri": "http://localhost:5200/oauth/callback",
+    "Scopes": [
+      "openid",
+      "profile",
+      "email"
+    ],
+    "State": "http://localhost:4200/tickets/book",
+    "ExpiresAt": "2026-04-26T12:06:17.2847316Z",
+    "IsUsed": true,
+    "CreatedAt": "2026-04-26T11:56:17.2832457Z"
+  },
+  {
+    "Code": "wRFF7yY7cmlveRQMIGWi24Ji_AHl_SIh1LVXadoXu78",
+    "ClientId": "e4a6c8f0b2d4e6a8c0f2b4d6e8a0c2f4",
+    "UserId": "058ebd09-806a-450c-9415-8fc39ec282b2",
+    "RedirectUri": "http://localhost:5200/oauth/callback",
+    "Scopes": [
+      "openid",
+      "profile",
+      "email"
+    ],
+    "State": "http://localhost:4200/tickets/book",
+    "ExpiresAt": "2026-04-26T12:21:36.6184432Z",
+    "IsUsed": true,
+    "CreatedAt": "2026-04-26T12:11:36.6184415Z"
+  },
+  {
+    "Code": "put-fCkbagUAvDtCEzG901rVlmtxJwJMr8Rx8z6rJCE",
+    "ClientId": "e4a6c8f0b2d4e6a8c0f2b4d6e8a0c2f4",
+    "UserId": "058ebd09-806a-450c-9415-8fc39ec282b2",
+    "RedirectUri": "http://localhost:5200/oauth/callback",
+    "Scopes": [
+      "openid",
+      "profile",
+      "email"
+    ],
+    "State": "http://localhost:4200/tickets/book",
+    "ExpiresAt": "2026-04-26T12:39:38.2118602Z",
+    "IsUsed": true,
+    "CreatedAt": "2026-04-26T12:29:38.2118598Z"
+  },
+  {
+    "Code": "NjQ_I8eADwf6N3pwWk0ry-YSoA9uMCr08IELk3ajuiQ",
+    "ClientId": "e4a6c8f0b2d4e6a8c0f2b4d6e8a0c2f4",
+    "UserId": "058ebd09-806a-450c-9415-8fc39ec282b2",
+    "RedirectUri": "http://localhost:5200/oauth/callback",
+    "Scopes": [
+      "openid",
+      "profile",
+      "email"
+    ],
+    "State": "http://localhost:4200/tickets/book",
+    "ExpiresAt": "2026-04-26T12:48:36.3207678Z",
+    "IsUsed": true,
+    "CreatedAt": "2026-04-26T12:38:36.3191074Z"
+  },
+  {
+    "Code": "qe5ZVlB4UedRFHtth7I3bKTh3LeSnQZDO7XL4F6Tw1E",
+    "ClientId": "e4a6c8f0b2d4e6a8c0f2b4d6e8a0c2f4",
+    "UserId": "058ebd09-806a-450c-9415-8fc39ec282b2",
+    "RedirectUri": "http://localhost:5200/oauth/callback",
+    "Scopes": [
+      "openid",
+      "profile",
+      "email"
+    ],
+    "State": "http://localhost:4200/tickets/book",
+    "ExpiresAt": "2026-04-26T12:55:22.4938956Z",
+    "IsUsed": true,
+    "CreatedAt": "2026-04-26T12:45:22.4938951Z"
+  },
+  {
+    "Code": "ggnrs9V1h58FAGvsvhZbh64nbDQaGmpiuHMnHt5EMPU",
+    "ClientId": "e4a6c8f0b2d4e6a8c0f2b4d6e8a0c2f4",
+    "UserId": "058ebd09-806a-450c-9415-8fc39ec282b2",
+    "RedirectUri": "http://localhost:5200/oauth/callback",
+    "Scopes": [
+      "openid",
+      "profile",
+      "email"
+    ],
+    "State": "http://localhost:4200/tickets/book",
+    "ExpiresAt": "2026-04-26T12:56:49.1883424Z",
+    "IsUsed": true,
+    "CreatedAt": "2026-04-26T12:46:49.1833909Z"
+  },
+  {
+    "Code": "08ky3q20FZCJKGzJTCF743vZqPrv9OZokbo6WEGIO6A",
+    "ClientId": "e4a6c8f0b2d4e6a8c0f2b4d6e8a0c2f4",
+    "UserId": "058ebd09-806a-450c-9415-8fc39ec282b2",
+    "RedirectUri": "http://localhost:5200/oauth/callback",
+    "Scopes": [
+      "openid",
+      "profile",
+      "email"
+    ],
+    "State": "http://localhost:4200/tickets/book",
+    "ExpiresAt": "2026-04-26T13:39:57.6752456Z",
+    "IsUsed": true,
+    "CreatedAt": "2026-04-26T13:29:57.6742296Z"
+  }
+]

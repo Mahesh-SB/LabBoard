@@ -1,0 +1,118 @@
+using System.Text.Json;
+using LabBoard.Auth.Api.Entities;
+using LabBoard.Auth.Api.Enums;
+using LabBoard.Auth.Api.Models.Client;
+
+namespace LabBoard.Auth.Api.Services.Client;
+
+public class ClientAppService(IWebHostEnvironment env) : IClientAppService
+{
+    private readonly string _storePath = Path.Combine(env.ContentRootPath, "Database", "clientAppStore.json");
+    private readonly JsonSerializerOptions _jsonOptions = new() { WriteIndented = true };
+
+    public async Task<ClientAppResponse> RegisterAsync(ClientAppRequest request)
+    {
+        var apps = await LoadAsync();
+
+        if (apps.Any(a => a.AppName.Equals(request.AppName, StringComparison.OrdinalIgnoreCase)))
+            throw new InvalidOperationException("An app with this name already exists.");
+
+        var hasRefreshToken = request.GrantTypes.Contains("refresh_token", StringComparer.OrdinalIgnoreCase);
+        var hasAuthCode = request.GrantTypes.Contains("authorization_code", StringComparer.OrdinalIgnoreCase);
+
+        if (hasRefreshToken && !hasAuthCode)
+            throw new InvalidOperationException("refresh_token grant requires authorization_code grant to be included.");
+
+        var additionalScopes = request.AdditionalOpenIdScopes;
+        if (hasRefreshToken && hasAuthCode && !additionalScopes.Contains(OpenIdScope.OfflineAccess))
+            additionalScopes = [.. additionalScopes, OpenIdScope.OfflineAccess];
+
+        var app = new ClientApp
+        {
+            AppName        = request.AppName,
+            AppDescription = request.AppDescription,
+            ClientId       = Guid.NewGuid().ToString("N"),
+            ClientSecret   = Guid.NewGuid().ToString("N"),
+            GrantTypes     = request.GrantTypes,
+            RedirectUris   = request.RedirectUris,
+            OpenIdScopes   = MergeWithDefaults(additionalScopes),
+            ApiScopes      = request.ApiScopes,
+            TokenExpiry    = request.TokenExpiry
+        };
+
+        apps.Add(app);
+        await SaveAsync(apps);
+
+        return ToResponse(app);
+    }
+
+    public async Task<ClientAppResponse?> GetByIdAsync(Guid id)
+    {
+        var apps = await LoadAsync();
+        var app = apps.FirstOrDefault(a => a.Id == id);
+        return app is null ? null : ToResponse(app);
+    }
+
+    public async Task<ClientAppResponse?> GetByClientIdAsync(string clientId)
+    {
+        var apps = await LoadAsync();
+        var app = apps.FirstOrDefault(a => a.ClientId == clientId);
+        return app is null ? null : ToResponse(app);
+    }
+
+    public async Task<IEnumerable<ClientAppResponse>> GetAllAsync()
+    {
+        var apps = await LoadAsync();
+        return apps.Select(ToResponse);
+    }
+
+    public async Task<bool> DeleteAsync(Guid id)
+    {
+        var apps = await LoadAsync();
+        var app = apps.FirstOrDefault(a => a.Id == id);
+        if (app is null) return false;
+
+        apps.Remove(app);
+        await SaveAsync(apps);
+        return true;
+    }
+
+    private static readonly List<OpenIdScope> DefaultOpenIdScopes =
+        [OpenIdScope.OpenId, OpenIdScope.Profile, OpenIdScope.Email];
+
+    private static List<OpenIdScope> MergeWithDefaults(List<OpenIdScope> requested)
+    {
+        var merged = new HashSet<OpenIdScope>(DefaultOpenIdScopes);
+        merged.UnionWith(requested);
+        return [.. merged];
+    }
+
+    private async Task<List<ClientApp>> LoadAsync()
+    {
+        if (!File.Exists(_storePath)) return [];
+        var json = await File.ReadAllTextAsync(_storePath);
+        return JsonSerializer.Deserialize<List<ClientApp>>(json) ?? [];
+    }
+
+    private async Task SaveAsync(List<ClientApp> apps)
+    {
+        var json = JsonSerializer.Serialize(apps, _jsonOptions);
+        await File.WriteAllTextAsync(_storePath, json);
+    }
+
+    private static ClientAppResponse ToResponse(ClientApp app) => new()
+    {
+        Id             = app.Id,
+        AppName        = app.AppName,
+        AppDescription = app.AppDescription,
+        ClientId       = app.ClientId,
+        ClientSecret   = app.ClientSecret,
+        GrantTypes     = app.GrantTypes,
+        RedirectUris   = app.RedirectUris,
+        OpenIdScopes   = app.OpenIdScopes,
+        ApiScopes      = app.ApiScopes,
+        TokenExpiry    = app.TokenExpiry,
+        IsActive       = app.IsActive,
+        CreatedAt      = app.CreatedAt
+    };
+}

@@ -1,0 +1,59 @@
+[
+  {
+    "ContainingType": "LabBoard.Gateway.Api.Controllers.OAuthCallbackController",
+    "Method": "Callback",
+    "RelativePath": "oauth/callback",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "code",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "state",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LabBoard.Gateway.Api.Controllers.OAuthCallbackController",
+    "Method": "Logout",
+    "RelativePath": "oauth/logout",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LabBoard.Gateway.Api.Controllers.OAuthCallbackController",
+    "Method": "Start",
+    "RelativePath": "oauth/start",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "returnUrl",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LabBoard.Gateway.Api.Controllers.TestController",
+    "Method": "GetUserDetail",
+    "RelativePath": "test/user-detail",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]

@@ -1,0 +1,103 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\D Drive\\Project\\BackEND\\LabBoard\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{620CC868-2368-429A-BFFE-0D87AB2FCA42}|src\\LabBoard.Gateway.Api\\LabBoard.Gateway.Api.csproj|c:\\d drive\\project\\backend\\labboard\\src\\labboard.gateway.api\\middleware\\gatewayauthmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{620CC868-2368-429A-BFFE-0D87AB2FCA42}|src\\LabBoard.Gateway.Api\\LabBoard.Gateway.Api.csproj|solutionrelative:src\\labboard.gateway.api\\middleware\\gatewayauthmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{620CC868-2368-429A-BFFE-0D87AB2FCA42}|src\\LabBoard.Gateway.Api\\LabBoard.Gateway.Api.csproj|c:\\d drive\\project\\backend\\labboard\\src\\labboard.gateway.api\\controllers\\oauthcallbackcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{620CC868-2368-429A-BFFE-0D87AB2FCA42}|src\\LabBoard.Gateway.Api\\LabBoard.Gateway.Api.csproj|solutionrelative:src\\labboard.gateway.api\\controllers\\oauthcallbackcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{77C77B98-2A54-49C6-8499-5DA9678F2ECE}|src\\LabBoard.Auth.Api\\LabBoard.Auth.Api.csproj|c:\\d drive\\project\\backend\\labboard\\src\\labboard.auth.api\\services\\oauth\\tokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{77C77B98-2A54-49C6-8499-5DA9678F2ECE}|src\\LabBoard.Auth.Api\\LabBoard.Auth.Api.csproj|solutionrelative:src\\labboard.auth.api\\services\\oauth\\tokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{77C77B98-2A54-49C6-8499-5DA9678F2ECE}|src\\LabBoard.Auth.Api\\LabBoard.Auth.Api.csproj|c:\\d drive\\project\\backend\\labboard\\src\\labboard.auth.api\\controllers\\oauthcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{77C77B98-2A54-49C6-8499-5DA9678F2ECE}|src\\LabBoard.Auth.Api\\LabBoard.Auth.Api.csproj|solutionrelative:src\\labboard.auth.api\\controllers\\oauthcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{77C77B98-2A54-49C6-8499-5DA9678F2ECE}|src\\LabBoard.Auth.Api\\LabBoard.Auth.Api.csproj|c:\\d drive\\project\\backend\\labboard\\src\\labboard.auth.api\\database\\userstore.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{77C77B98-2A54-49C6-8499-5DA9678F2ECE}|src\\LabBoard.Auth.Api\\LabBoard.Auth.Api.csproj|solutionrelative:src\\labboard.auth.api\\database\\userstore.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "TokenService.cs",
+              "DocumentMoniker": "C:\\D Drive\\Project\\BackEND\\LabBoard\\src\\LabBoard.Auth.Api\\Services\\OAuth\\TokenService.cs",
+              "RelativeDocumentMoniker": "src\\LabBoard.Auth.Api\\Services\\OAuth\\TokenService.cs",
+              "ToolTip": "C:\\D Drive\\Project\\BackEND\\LabBoard\\src\\LabBoard.Auth.Api\\Services\\OAuth\\TokenService.cs",
+              "RelativeToolTip": "src\\LabBoard.Auth.Api\\Services\\OAuth\\TokenService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-26T14:15:40.816Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "OAuthCallbackController.cs",
+              "DocumentMoniker": "C:\\D Drive\\Project\\BackEND\\LabBoard\\src\\LabBoard.Gateway.Api\\Controllers\\OAuthCallbackController.cs",
+              "RelativeDocumentMoniker": "src\\LabBoard.Gateway.Api\\Controllers\\OAuthCallbackController.cs",
+              "ToolTip": "C:\\D Drive\\Project\\BackEND\\LabBoard\\src\\LabBoard.Gateway.Api\\Controllers\\OAuthCallbackController.cs",
+              "RelativeToolTip": "src\\LabBoard.Gateway.Api\\Controllers\\OAuthCallbackController.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAACoAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-26T13:38:38.372Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "OAuthController.cs",
+              "DocumentMoniker": "C:\\D Drive\\Project\\BackEND\\LabBoard\\src\\LabBoard.Auth.Api\\Controllers\\OAuthController.cs",
+              "RelativeDocumentMoniker": "src\\LabBoard.Auth.Api\\Controllers\\OAuthController.cs",
+              "ToolTip": "C:\\D Drive\\Project\\BackEND\\LabBoard\\src\\LabBoard.Auth.Api\\Controllers\\OAuthController.cs",
+              "RelativeToolTip": "src\\LabBoard.Auth.Api\\Controllers\\OAuthController.cs",
+              "ViewState": "AgIAAEgAAAAAAAAAAAAYwHAAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-26T12:11:08.46Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "GatewayAuthMiddleware.cs",
+              "DocumentMoniker": "C:\\D Drive\\Project\\BackEND\\LabBoard\\src\\LabBoard.Gateway.Api\\Middleware\\GatewayAuthMiddleware.cs",
+              "RelativeDocumentMoniker": "src\\LabBoard.Gateway.Api\\Middleware\\GatewayAuthMiddleware.cs",
+              "ToolTip": "C:\\D Drive\\Project\\BackEND\\LabBoard\\src\\LabBoard.Gateway.Api\\Middleware\\GatewayAuthMiddleware.cs",
+              "RelativeToolTip": "src\\LabBoard.Gateway.Api\\Middleware\\GatewayAuthMiddleware.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAkwFQAAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-25T13:29:11.442Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "userStore.json",
+              "DocumentMoniker": "C:\\D Drive\\Project\\BackEND\\LabBoard\\src\\LabBoard.Auth.Api\\Database\\userStore.json",
+              "RelativeDocumentMoniker": "src\\LabBoard.Auth.Api\\Database\\userStore.json",
+              "ToolTip": "C:\\D Drive\\Project\\BackEND\\LabBoard\\src\\LabBoard.Auth.Api\\Database\\userStore.json",
+              "RelativeToolTip": "src\\LabBoard.Auth.Api\\Database\\userStore.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-04-25T13:19:40.521Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

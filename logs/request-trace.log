@@ -1,0 +1,145 @@
+﻿==========================================================================================
+[2026-04-26 13:29:48.055 UTC]  SERVICE: LabBoard.Gateway.Api
+  Method     : POST
+  Full URL   : http://localhost:5200/ticketmaster/api/tickets
+  Decoded URL: http://localhost:5200/ticketmaster/api/tickets
+  Path       : /ticketmaster/api/tickets
+  Headers    :
+    Host                   = localhost:5200
+    Origin                 = http://localhost:4200
+    Referer                = http://localhost:4200/
+    Content-Type           = application/json
+    Content-Length         = 83
+    Cookie                 = [grafana_session, grafana_session_expiry]
+    User-Agent             = Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 OPR/130.0.0.0
+  Body       : {"eventName":"LabBoard Music Festival 2026","bookedBy":"Mahesh","seat":"2 Seat(s)"}
+  Status     : 401
+  Duration   : 5ms
+------------------------------------------------------------------------------------------
+
+==========================================================================================
+[2026-04-26 13:29:48.101 UTC]  SERVICE: LabBoard.Auth.Api
+  Method     : GET
+  Full URL   : http://localhost:5100/oauth/authorize?response_type=code&client_id=e4a6c8f0b2d4e6a8c0f2b4d6e8a0c2f4&redirect_uri=http%3A%2F%2Flocalhost%3A5200%2Foauth%2Fcallback&scope=openid%20profile%20email&state=http%3A%2F%2Flocalhost%3A4200%2Ftickets%2Fbook
+  Decoded URL: http://localhost:5100/oauth/authorize?response_type=code&client_id=e4a6c8f0b2d4e6a8c0f2b4d6e8a0c2f4&redirect_uri=http://localhost:5200/oauth/callback&scope=openid profile email&state=http://localhost:4200/tickets/book
+  Path       : /oauth/authorize
+  QueryString: ?response_type=code&client_id=e4a6c8f0b2d4e6a8c0f2b4d6e8a0c2f4&redirect_uri=http%3A%2F%2Flocalhost%3A5200%2Foauth%2Fcallback&scope=openid%20profile%20email&state=http%3A%2F%2Flocalhost%3A4200%2Ftickets%2Fbook
+  Params     :
+    response_type          = code
+    client_id              = e4a6c8f0b2d4e6a8c0f2b4d6e8a0c2f4
+    redirect_uri           = http://localhost:5200/oauth/callback
+    scope                  = openid profile email
+    state                  = http://localhost:4200/tickets/book
+  Headers    :
+    Host                   = localhost:5100
+    Referer                = http://localhost:4200/
+    Cookie                 = [grafana_session, grafana_session_expiry]
+    User-Agent             = Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 OPR/130.0.0.0
+  Status     : 200
+  Duration   : 15ms
+------------------------------------------------------------------------------------------
+
+==========================================================================================
+[2026-04-26 13:29:57.722 UTC]  SERVICE: LabBoard.Auth.Api
+  Method     : POST
+  Full URL   : http://localhost:5100/oauth/login
+  Decoded URL: http://localhost:5100/oauth/login
+  Path       : /oauth/login
+  Headers    :
+    Host                   = localhost:5100
+    Origin                 = http://localhost:5100
+    Referer                = http://localhost:5100/oauth/authorize?response_type=code&client_id=e4a6c8f0b2d4e6a8c0f2b4d6e8a0c2f4&redirect_uri=http%3A%2F%2Flocalhost%3A5200%2Foauth%2Fcallback&scope=openid%20profile%20email&state=http%3A%2F%2Flocalhost%3A4200%2Ftickets%2Fbook
+    Content-Type           = application/x-www-form-urlencoded
+    Content-Length         = 229
+    Cookie                 = [grafana_session, grafana_session_expiry]
+    User-Agent             = Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 OPR/130.0.0.0
+  Body       : clientId=e4a6c8f0b2d4e6a8c0f2b4d6e8a0c2f4&redirectUri=http%3A%2F%2Flocalhost%3A5200%2Foauth%2Fcallback&scope=openid+profile+email&state=http%3A%2F%2Flocalhost%3A4200%2Ftickets%2Fbook&email=mahesh%40gmail.com&password=mahesh%40123
+  Form Fields:
+    clientId               = e4a6c8f0b2d4e6a8c0f2b4d6e8a0c2f4
+    redirectUri            = http://localhost:5200/oauth/callback
+    scope                  = openid+profile+email
+    state                  = http://localhost:4200/tickets/book
+    email                  = mahesh@gmail.com
+    password               = mahesh@123
+  Status     : 302
+  Duration   : 157ms
+------------------------------------------------------------------------------------------
+
+==========================================================================================
+[2026-04-26 13:29:58.172 UTC]  SERVICE: LabBoard.Auth.Api
+  Method     : POST
+  Full URL   : http://localhost:5100/oauth/token
+  Decoded URL: http://localhost:5100/oauth/token
+  Path       : /oauth/token
+  Headers    :
+    Host                   = localhost:5100
+    Content-Type           = application/x-www-form-urlencoded
+    Content-Length         = 230
+  Body       : grant_type=authorization_code&code=08ky3q20FZCJKGzJTCF743vZqPrv9OZokbo6WEGIO6A&client_id=e4a6c8f0b2d4e6a8c0f2b4d6e8a0c2f4&client_secret=f5b7d9e1a3c5f7b9d1e3a5c7f9b1d3e5&redirect_uri=http%3A%2F%2Flocalhost%3A5200%2Foauth%2Fcallback
+  Form Fields:
+    grant_type             = authorization_code
+    code                   = 08ky3q20FZCJKGzJTCF743vZqPrv9OZokbo6WEGIO6A
+    client_id              = e4a6c8f0b2d4e6a8c0f2b4d6e8a0c2f4
+    client_secret          = f5b7d9e1a3c5f7b9d1e3a5c7f9b1d3e5
+    redirect_uri           = http://localhost:5200/oauth/callback
+  Status     : 200
+  Duration   : 257ms
+------------------------------------------------------------------------------------------
+
+==========================================================================================
+[2026-04-26 13:29:58.243 UTC]  SERVICE: LabBoard.Gateway.Api
+  Method     : GET
+  Full URL   : http://localhost:5200/oauth/callback?code=08ky3q20FZCJKGzJTCF743vZqPrv9OZokbo6WEGIO6A&state=http%3A%2F%2Flocalhost%3A4200%2Ftickets%2Fbook
+  Decoded URL: http://localhost:5200/oauth/callback?code=08ky3q20FZCJKGzJTCF743vZqPrv9OZokbo6WEGIO6A&state=http://localhost:4200/tickets/book
+  Path       : /oauth/callback
+  QueryString: ?code=08ky3q20FZCJKGzJTCF743vZqPrv9OZokbo6WEGIO6A&state=http%3A%2F%2Flocalhost%3A4200%2Ftickets%2Fbook
+  Params     :
+    code                   = 08ky3q20FZCJKGzJTCF743vZqPrv9OZokbo6WEGIO6A
+    state                  = http://localhost:4200/tickets/book
+  Headers    :
+    Host                   = localhost:5200
+    Referer                = http://localhost:5100/
+    Cookie                 = [grafana_session, grafana_session_expiry]
+    User-Agent             = Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 OPR/130.0.0.0
+  Status     : 302
+  Duration   : 503ms
+------------------------------------------------------------------------------------------
+
+==========================================================================================
+[2026-04-26 13:29:59.035 UTC]  SERVICE: LabBoard.TicketMaster.Api
+  Method     : POST
+  Full URL   : http://localhost:5300/api/tickets
+  Decoded URL: http://localhost:5300/api/tickets
+  Path       : /api/tickets
+  Headers    :
+    Host                   = localhost:5300
+    Origin                 = http://localhost:4200
+    Referer                = http://localhost:4200/
+    Content-Type           = application/json
+    Content-Length         = 83
+    Cookie                 = [grafana_session, grafana_session_expiry, lb_session]
+    User-Agent             = Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 OPR/130.0.0.0
+  Body       : {"eventName":"LabBoard Music Festival 2026","bookedBy":"Mahesh","seat":"2 Seat(s)"}
+  Status     : 201
+  Duration   : 213ms
+------------------------------------------------------------------------------------------
+
+==========================================================================================
+[2026-04-26 13:29:59.060 UTC]  SERVICE: LabBoard.Gateway.Api
+  Method     : POST
+  Full URL   : http://localhost:5200/ticketmaster/api/tickets
+  Decoded URL: http://localhost:5200/ticketmaster/api/tickets
+  Path       : /ticketmaster/api/tickets
+  Headers    :
+    Host                   = localhost:5200
+    Origin                 = http://localhost:4200
+    Referer                = http://localhost:4200/
+    Content-Type           = application/json
+    Content-Length         = 83
+    Cookie                 = [grafana_session, grafana_session_expiry, lb_session]
+    User-Agent             = Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 OPR/130.0.0.0
+  Body       : {"eventName":"LabBoard Music Festival 2026","bookedBy":"Mahesh","seat":"2 Seat(s)"}
+  Status     : 201
+  Duration   : 593ms
+------------------------------------------------------------------------------------------
+

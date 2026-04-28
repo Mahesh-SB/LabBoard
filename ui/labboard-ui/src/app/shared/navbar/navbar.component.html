@@ -1,0 +1,76 @@
+<nav class="navbar">
+
+  <!-- ── Left: brand + menus ─────────────────────────────────────────── -->
+  <div class="navbar-left">
+
+    <div class="brand">
+      <span class="brand-icon">⬡</span>
+      <span class="brand-name">LabBoard</span>
+    </div>
+
+    <div class="nav-divider"></div>
+
+    <div class="nav-menus">
+
+      <!-- Home -->
+      <a class="nav-link" routerLink="/" routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: true }">
+        🏠 Home
+      </a>
+
+      <!-- Auth -->
+      <div class="nav-group">
+        <button class="nav-group-btn">
+          <span class="menu-icon">🔐</span>
+          Auth
+          <span class="chevron">▾</span>
+        </button>
+        <div class="dropdown">
+          <a routerLink="/client-register" routerLinkActive="active">
+            <span class="item-icon">🖥️</span>
+            <span class="item-text">
+              <span class="item-title">Client App</span>
+              <span class="item-desc">Register OAuth clients</span>
+            </span>
+          </a>
+          <a routerLink="/register" routerLinkActive="active">
+            <span class="item-icon">👤</span>
+            <span class="item-text">
+              <span class="item-title">User Registration</span>
+              <span class="item-desc">Create &amp; manage users</span>
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Apps -->
+      <div class="nav-group">
+        <button class="nav-group-btn">
+          <span class="menu-icon">⚡</span>
+          Apps
+          <span class="chevron">▾</span>
+        </button>
+        <div class="dropdown">
+          <a routerLink="/tickets/book" routerLinkActive="active">
+            <span class="item-icon">🎫</span>
+            <span class="item-text">
+              <span class="item-title">Ticket Master</span>
+              <span class="item-desc">Book &amp; manage tickets</span>
+            </span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Right: actions ─────────────────────────────────────────────── -->
+  <div class="navbar-right">
+    @if (isHome) {
+      <button class="btn-signin" (click)="signIn()">🔑 Sign In</button>
+    } @else {
+      <button class="btn-signout" (click)="signOut()">⎋ Sign Out</button>
+    }
+  </div>
+
+</nav>

@@ -1,0 +1,19 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "src\\LabBoard.Auth.Api\\LabBoard.Auth.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "src\\LabBoard.Gateway.Api\\LabBoard.Gateway.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "src\\LabBoard.TicketMaster.Api\\LabBoard.TicketMaster.Api.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

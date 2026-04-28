@@ -1,0 +1,202 @@
+<div class="register-wrapper">
+  <div class="register-card">
+
+    <!-- Left Panel -->
+    <div class="left-panel">
+      <div class="page-header">
+        <span class="header-icon">🖥️</span>
+        <div class="header-text">
+          <h1>Client Registration</h1>
+          <p>Register your service with LabBoard Auth</p>
+        </div>
+      </div>
+      <h2>Register Your Application</h2>
+      <p>Connect your service to LabBoard's Auth infrastructure with full OAuth2 and OpenID Connect support.</p>
+      <ul class="feature-list">
+        <li><span>✅</span> Auto-generated ClientId & Secret</li>
+        <li><span>✅</span> Multiple Grant Type Support</li>
+        <li><span>✅</span> Granular API Scope Control</li>
+        <li><span>✅</span> OpenID Connect Scopes</li>
+        <li><span>✅</span> Configurable Token Expiry</li>
+      </ul>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="right-panel">
+      <form class="register-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <!-- Credentials card (shown after successful registration) -->
+        <div *ngIf="registeredApp" class="credentials-card">
+          <div class="credentials-header">
+            ✅ Application registered! Save your credentials — the secret won't be shown again.
+          </div>
+          <div class="credential-row">
+            <span class="credential-label">Client ID</span>
+            <code class="credential-value">{{ registeredApp.clientId }}</code>
+            <button type="button" class="btn-copy" (click)="copy(registeredApp.clientId, 'clientId')"
+                    [title]="copied === 'clientId' ? 'Copied!' : 'Copy'">
+              <svg *ngIf="copied !== 'clientId'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+              <svg *ngIf="copied === 'clientId'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </button>
+          </div>
+          <div class="credential-row">
+            <span class="credential-label">Client Secret</span>
+            <code class="credential-value secret">{{ registeredApp.clientSecret }}</code>
+            <button type="button" class="btn-copy" (click)="copy(registeredApp.clientSecret, 'clientSecret')"
+                    [title]="copied === 'clientSecret' ? 'Copied!' : 'Copy'">
+              <svg *ngIf="copied !== 'clientSecret'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+              <svg *ngIf="copied === 'clientSecret'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- API error -->
+        <div *ngIf="errorMessage" class="alert alert-error">⚠️ {{ errorMessage }}</div>
+
+        <!-- App Name & Token Expiry -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="appName">App Name <span class="required">*</span></label>
+            <div class="input-wrapper" [class.input-error]="ctrl('appName').invalid && ctrl('appName').touched">
+              <span class="input-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+                </svg>
+              </span>
+              <input id="appName" type="text" placeholder="My Service App" formControlName="appName" />
+            </div>
+            <span class="field-error">{{ ctrl('appName') | fieldError }}</span>
+          </div>
+
+          <div class="form-group">
+            <label for="tokenExpiry">Token Expiry (seconds) <span class="required">*</span></label>
+            <div class="input-wrapper" [class.input-error]="ctrl('tokenExpiry').invalid && ctrl('tokenExpiry').touched">
+              <span class="input-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                </svg>
+              </span>
+              <input id="tokenExpiry" type="number" placeholder="3600" formControlName="tokenExpiry" />
+            </div>
+            <span class="field-error">{{ ctrl('tokenExpiry') | fieldError }}</span>
+          </div>
+        </div>
+
+        <!-- App Description -->
+        <div class="form-group">
+          <label for="appDescription">App Description
+            <span class="char-count">{{ ctrl('appDescription').value?.length || 0 }}/500</span>
+          </label>
+          <div class="input-wrapper" [class.input-error]="ctrl('appDescription').invalid && ctrl('appDescription').touched">
+            <textarea id="appDescription" rows="2" placeholder="Briefly describe what this app does..."
+                      formControlName="appDescription"></textarea>
+          </div>
+          <span class="field-error">{{ ctrl('appDescription') | fieldError }}</span>
+        </div>
+
+        <!-- Grant Types -->
+        <div class="form-group">
+          <label>Grant Types <span class="required">*</span></label>
+          <div class="chip-group">
+            <button type="button" *ngFor="let g of grantTypeOptions"
+                    class="chip" [class.active]="isChipSelected('grantTypes', g)"
+                    [disabled]="isLoading"
+                    (click)="toggleChip('grantTypes', g)">
+              {{ g }}
+            </button>
+          </div>
+          <span class="field-error">{{ ctrl('grantTypes') | fieldError }}</span>
+          <div class="hint-box error" *ngIf="showRefreshTokenNeedsAuthCode">
+            ❌ <strong>refresh_token</strong> requires <strong>authorization_code</strong> — refresh tokens are only issued during the authorization code flow.
+          </div>
+          <div class="hint-box error" *ngIf="showOfflineAccessNeedsAuthCodeAndRefreshToken">
+            ❌ <strong>OfflineAccess</strong> scope requires both <strong>authorization_code</strong> and <strong>refresh_token</strong> grant types.
+          </div>
+          <div class="hint-box error" *ngIf="showNeedsOfflineAccessScope">
+            ❌ <strong>authorization_code + refresh_token</strong> requires the <strong>OfflineAccess</strong> scope — without it the server will not issue a refresh token.
+          </div>
+        </div>
+
+        <!-- Redirect URIs -->
+        <div class="form-group">
+          <label>Redirect URIs</label>
+          <div class="uri-list" formArrayName="redirectUris">
+            <div *ngFor="let ctrl of redirectUrisArray.controls; let i = index" class="uri-row">
+              <div class="uri-input-col">
+                <div class="input-wrapper" [class.input-error]="uriControl(i).invalid && uriControl(i).touched">
+                  <span class="input-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                    </svg>
+                  </span>
+                  <input type="text" [formControlName]="i" placeholder="https://yourapp.com/callback" />
+                </div>
+                <span class="field-error">{{ uriControl(i) | fieldError }}</span>
+              </div>
+              <button type="button" class="btn-remove" (click)="removeRedirectUri(i)"
+                      [disabled]="redirectUrisArray.length === 1 || isLoading">✕</button>
+            </div>
+            <button type="button" class="btn-add-uri" (click)="addRedirectUri()" [disabled]="isLoading">+ Add URI</button>
+          </div>
+        </div>
+
+        <!-- Scopes Row -->
+        <div class="form-row">
+
+          <!-- API Scopes -->
+          <div class="form-group">
+            <label>API Scopes <span class="required">*</span></label>
+            <div class="chip-group">
+              <button type="button" *ngFor="let s of apiScopeOptions"
+                      class="chip scope-chip" [class.active]="isChipSelected('apiScopes', s)"
+                      [disabled]="isLoading"
+                      (click)="toggleChip('apiScopes', s)">
+                <ng-container *ngIf="s === 'Admin'">👑 </ng-container>
+                <ng-container *ngIf="s === 'Add'">➕ </ng-container>
+                <ng-container *ngIf="s === 'Update'">✏️ </ng-container>
+                <ng-container *ngIf="s === 'Delete'">🗑️ </ng-container>
+                {{ s }}
+              </button>
+            </div>
+            <span class="field-error">{{ ctrl('apiScopes') | fieldError }}</span>
+          </div>
+
+          <!-- Additional OpenID Scopes -->
+          <div class="form-group">
+            <label>Additional OpenID Scopes
+              <span class="hint">(OpenId, Profile, Email auto-added)</span>
+            </label>
+            <div class="chip-group">
+              <button type="button" *ngFor="let s of openIdScopeOptions"
+                      class="chip scope-chip" [class.active]="isChipSelected('additionalOpenIdScopes', s)"
+                      [disabled]="isLoading"
+                      (click)="toggleChip('additionalOpenIdScopes', s)">
+                {{ s }}
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn-register" [disabled]="isLoading">
+          <span *ngIf="isLoading">Registering Application...</span>
+          <span *ngIf="!isLoading">Register Application</span>
+        </button>
+
+        <p class="login-link">Already registered? <a href="#">View your apps</a></p>
+
+      </form>
+    </div>
+
+  </div>
+</div>

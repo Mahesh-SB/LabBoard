@@ -1,0 +1,142 @@
+services:
+
+  # ─── Redis ────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: labboard-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --save 60 1 --loglevel warning
+    networks:
+      - labboard-net
+
+  # ─── LabBoard Auth API ───────────────────────────────────────────────────
+  labboard-auth-api:
+    build:
+      context: ./src/LabBoard.Auth.Api
+      dockerfile: Dockerfile
+    container_name: labboard-auth-api
+    ports:
+      - "5100:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - labboard-net
+
+  # ─── LabBoard Gateway API ─────────────────────────────────────────────────
+  labboard-gateway:
+    build:
+      context: ./src/LabBoard.Gateway.Api
+      dockerfile: Dockerfile
+    container_name: labboard-gateway
+    ports:
+      - "5200:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    depends_on:
+      - labboard-auth-api
+      - labboard-redis-api
+      - labboard-observability
+    networks:
+      - labboard-net
+
+  # ─── LabBoard Redis API ───────────────────────────────────────────────────
+  labboard-redis-api:
+    build:
+      context: ./src/LabBoard.Redis.Api
+      dockerfile: Dockerfile
+    container_name: labboard-redis-api
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Redis__ConnectionString=redis:6379
+    depends_on:
+      - redis
+    networks:
+      - labboard-net
+
+  # ─── LabBoard Observability ───────────────────────────────────────────────
+  labboard-observability:
+    build:
+      context: ./src/LabBoard.Observability
+      dockerfile: Dockerfile
+    container_name: labboard-observability
+    ports:
+      - "5001:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Redis__ConnectionString=redis:6379
+      - Metrics__ScrapeIntervalSeconds=10
+    depends_on:
+      - redis
+    networks:
+      - labboard-net
+
+  # ─── Prometheus ───────────────────────────────────────────────────────────
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: labboard-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--web.enable-remote-write-receiver'
+    networks:
+      - labboard-net
+    depends_on:
+      - labboard-redis-api
+      - labboard-observability
+
+  # ─── k6 Load Tester (profile: k6) ────────────────────────────────────────
+  # Usage: docker compose run --rm k6 <script>
+  # Example: docker compose run --rm k6 smoke-test.js
+  k6:
+    image: grafana/k6:latest
+    container_name: labboard-k6
+    profiles: ["k6"]
+    volumes:
+      - ./tests/k6:/tests
+    working_dir: /tests
+    networks:
+      - labboard-net
+    environment:
+      - BASE_URL=http://labboard-redis-api:8080
+      - K6_PROMETHEUS_RW_SERVER_URL=http://prometheus:9090/api/v1/write
+      - K6_PROMETHEUS_RW_PUSH_INTERVAL=5s
+      - K6_PROMETHEUS_RW_TREND_STATS=p(50),p(95),p(99),min,max
+    depends_on:
+      - labboard-redis-api
+      - prometheus
+    entrypoint: ["k6", "run", "--out", "experimental-prometheus-rw"]
+
+  # ─── Grafana ──────────────────────────────────────────────────────────────
+  grafana:
+    image: grafana/grafana:latest
+    container_name: labboard-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - ./config/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./config/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+    networks:
+      - labboard-net
+    depends_on:
+      - prometheus
+
+networks:
+  labboard-net:
+    driver: bridge
+
+volumes:
+  grafana-data:

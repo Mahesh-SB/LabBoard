@@ -1,0 +1,174 @@
+<div class="register-wrapper">
+  <div class="register-card">
+
+    <!-- Left Panel -->
+    <div class="left-panel">
+      <div class="page-header">
+        <span class="header-icon">👤</span>
+        <div class="header-text">
+          <h1>User Registration</h1>
+          <p>Create your LabBoard account</p>
+        </div>
+      </div>
+      <h2>Welcome to LabBoard</h2>
+      <p>A unified platform to manage your lab services, users, and applications securely.</p>
+      <ul class="feature-list">
+        <li><span>✅</span> Secure OAuth2 Authentication</li>
+        <li><span>✅</span> Role-based Access Control</li>
+        <li><span>✅</span> Client App Management</li>
+        <li><span>✅</span> OpenID Connect Support</li>
+      </ul>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="right-panel">
+
+      <!-- Form -->
+      <form class="register-form" (ngSubmit)="onSubmit()">
+
+        <!-- Success Message -->
+        <div *ngIf="successMessage" class="alert alert-success">
+          ✅ {{ successMessage }}
+        </div>
+
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="alert alert-error">
+          ⚠️ {{ errorMessage }}
+        </div>
+
+        <!-- Full Name & Email -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </span>
+              <input id="fullName" type="text" placeholder="John Doe" name="fullName"
+                     [(ngModel)]="formData.fullName" [disabled]="isLoading" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+              </span>
+              <input id="email" type="email" placeholder="john@example.com" name="email"
+                     [(ngModel)]="formData.email" [disabled]="isLoading" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Phone & Age -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.06 6.06l1.27-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+                </svg>
+              </span>
+              <input id="phone" type="tel" placeholder="+1 (555) 000-0000" name="phone"
+                     [(ngModel)]="formData.phone" [disabled]="isLoading" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="age">Age</label>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/>
+                  <line x1="8" y1="2" x2="8" y2="6"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+              </span>
+              <input id="age" type="number" placeholder="25" min="1" max="120" name="age"
+                     [(ngModel)]="formData.age" [disabled]="isLoading" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Gender & Password -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="gender">Gender</label>
+            <div class="input-wrapper select-wrapper">
+              <span class="input-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="2" y1="12" x2="22" y2="12"/>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                </svg>
+              </span>
+              <select id="gender" name="gender" [(ngModel)]="selectedGender" [disabled]="isLoading">
+                <option value="" disabled>Select</option>
+                <option *ngFor="let g of genders" [value]="g">{{ g }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </span>
+              <input id="password" [type]="showPassword ? 'text' : 'password'" placeholder="Min. 6 characters" name="password"
+                     [(ngModel)]="formData.password" [disabled]="isLoading" />
+              <button type="button" class="toggle-password" (click)="showPassword = !showPassword">
+                <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+                <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                  <line x1="1" y1="1" x2="23" y2="23"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Role -->
+        <div class="form-group">
+          <label>Role</label>
+          <div class="role-options">
+            <label *ngFor="let role of roles" class="role-option" [class.active]="selectedRole === role">
+              <input type="radio" name="role" [value]="role" [(ngModel)]="selectedRole" [disabled]="isLoading" />
+              <span class="role-icon">
+                <ng-container *ngIf="role === 'Admin'">👑</ng-container>
+                <ng-container *ngIf="role === 'Editor'">✏️</ng-container>
+                <ng-container *ngIf="role === 'Viewer'">👁️</ng-container>
+              </span>
+              <span>{{ role }}</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn-register" [disabled]="isLoading">
+          <span *ngIf="isLoading">Creating Account...</span>
+          <span *ngIf="!isLoading">Create Account</span>
+        </button>
+
+        <p class="login-link">Already have an account? <a href="#">Sign in</a></p>
+
+      </form>
+    </div>
+
+  </div>
+</div>

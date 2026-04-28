@@ -1,0 +1,132 @@
+<div class="home-wrapper">
+
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="home-layout">
+
+    <!-- ── Left: Hero ──────────────────────────────────────────────────── -->
+    <aside class="hero-col">
+      <div class="hero-badge">⬡ Developer Platform</div>
+
+      <h1 class="hero-title">
+        Your Backend Lab,<br>
+        <span class="gradient-text">Wired &amp; Ready.</span>
+      </h1>
+
+      <p class="hero-sub">
+        Manage auth, caching, services and apps from one unified dashboard.
+      </p>
+
+      <div class="hero-actions">
+        <button class="btn-signin" (click)="signIn()">🔑 Sign In</button>
+        <a routerLink="/tickets/book" class="btn-ghost">Explore Apps →</a>
+      </div>
+
+      <div class="stack-strip">
+        <span class="stack-label">Powered by</span>
+        <div class="stack-badges">
+          @for (tech of stack; track tech.label) {
+            <span class="badge"
+                  [style.background]="tech.gradient"
+                  [style.box-shadow]="'0 4px 14px ' + tech.glow">
+              {{ tech.label }}
+            </span>
+          }
+        </div>
+      </div>
+    </aside>
+
+    <div class="col-divider"></div>
+
+    <!-- ── Right: Cards ────────────────────────────────────────────────── -->
+    <main class="content-col">
+
+      <!-- Search -->
+      <div class="search-box">
+        <span class="search-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </span>
+        <input type="text" placeholder="Search apps, services…"
+               [(ngModel)]="searchQuery"
+               (input)="onSearchInput()"
+               (keydown.escape)="clearSearch()" />
+        @if (searchQuery) {
+          <button class="clear-btn" (click)="clearSearch()">✕</button>
+        }
+
+        @if (searchOpen && results.length > 0) {
+          <div class="search-results">
+            @for (item of results; track item.route) {
+              <button class="result-item" (click)="navigate(item.route)">
+                <span class="result-icon">{{ item.icon }}</span>
+                <span class="result-body">
+                  <span class="result-title">{{ item.title }}</span>
+                  <span class="result-desc">{{ item.desc }}</span>
+                </span>
+                <span class="result-group">{{ item.group }}</span>
+              </button>
+            }
+          </div>
+        }
+        @if (searchOpen && results.length === 0) {
+          <div class="search-results search-empty">
+            No results for "{{ searchQuery }}"
+          </div>
+        }
+      </div>
+
+      <!-- Services -->
+      <div class="section-label">🟢 Running Services</div>
+      <div class="services-grid">
+        @for (svc of services; track svc.name) {
+          <div class="service-card" [style.--accent]="svc.color">
+            <div class="svc-header">
+              <span class="svc-icon">{{ svc.icon }}</span>
+              <span class="svc-status"><span class="dot"></span> live</span>
+            </div>
+            <div class="svc-name">{{ svc.name }}</div>
+            <div class="svc-desc">{{ svc.desc }}</div>
+            <div class="svc-port">Port {{ svc.port }}</div>
+          </div>
+        }
+      </div>
+
+      <!-- Quick Access -->
+      <div class="section-label">⚡ Quick Access</div>
+
+      <!-- Auth row -->
+      <div class="quick-grid">
+        @for (link of authLinks; track link.title) {
+          <a [routerLink]="link.route" class="quick-card">
+            <div class="quick-icon" [style.background]="link.gradient">{{ link.icon }}</div>
+            <div class="quick-body">
+              <div class="quick-title">{{ link.title }}</div>
+              <div class="quick-desc">{{ link.desc }}</div>
+            </div>
+            <span class="quick-arrow">→</span>
+          </a>
+        }
+      </div>
+
+      <!-- Apps row -->
+      <div class="quick-grid">
+        @for (link of appLinks; track link.title) {
+          <a [routerLink]="link.route" class="quick-card">
+            <div class="quick-icon" [style.background]="link.gradient">{{ link.icon }}</div>
+            <div class="quick-body">
+              <div class="quick-title">{{ link.title }}</div>
+              <div class="quick-desc">{{ link.desc }}</div>
+            </div>
+            <span class="quick-arrow">→</span>
+          </a>
+        }
+      </div>
+
+    </main>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+{
+  "Routes": [
+
+    // ── Auth API (/auth/{everything} → labboard-auth-api:8080/{everything}) ──
+    {
+      "UpstreamPathTemplate": "/auth/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ],
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "labboard-auth-api", "Port": 8080 }
+      ]
+    },
+
+    // ── Redis API (/redis/{everything} → labboard-redis-api:8080/{everything}) ──
+    {
+      "UpstreamPathTemplate": "/redis/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ],
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "labboard-redis-api", "Port": 8080 }
+      ]
+    },
+
+    // ── Observability (/observability/{everything} → labboard-observability:8080/{everything}) ──
+    {
+      "UpstreamPathTemplate": "/observability/{everything}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "labboard-observability", "Port": 8080 }
+      ]
+    }
+
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5200"
+  }
+}

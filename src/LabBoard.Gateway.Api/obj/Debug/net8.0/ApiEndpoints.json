@@ -1,0 +1,23 @@
+[
+  {
+    "ContainingType": "LabBoard.Gateway.Api.Controllers.OAuthCallbackController",
+    "Method": "Callback",
+    "RelativePath": "oauth/callback",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "code",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "state",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
