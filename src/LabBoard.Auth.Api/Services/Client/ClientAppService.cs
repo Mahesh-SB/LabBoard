@@ -38,9 +38,18 @@ public class ClientAppService(IWebHostEnvironment env) : IClientAppService
         if (hasClientCredentials && (hasAuthCode || hasRefreshToken))
             throw new InvalidOperationException("client_credentials cannot be combined with authorization_code or refresh_token grants.");
 
-        var additionalScopes = request.AdditionalOpenIdScopes;
-        if (hasRefreshToken && hasAuthCode && !additionalScopes.Contains(OpenIdScope.OfflineAccess))
-            additionalScopes = [.. additionalScopes, OpenIdScope.OfflineAccess];
+        List<OpenIdScope> resolvedScopes;
+        if (hasClientCredentials)
+        {
+            resolvedScopes = [];
+        }
+        else
+        {
+            var additionalScopes = request.AdditionalOpenIdScopes;
+            if (hasRefreshToken && hasAuthCode && !additionalScopes.Contains(OpenIdScope.OfflineAccess))
+                additionalScopes = [.. additionalScopes, OpenIdScope.OfflineAccess];
+            resolvedScopes = MergeWithDefaults(additionalScopes);
+        }
 
         var app = new ClientApp
         {
@@ -49,8 +58,8 @@ public class ClientAppService(IWebHostEnvironment env) : IClientAppService
             ClientId       = Guid.NewGuid().ToString("N"),
             ClientSecret   = Guid.NewGuid().ToString("N"),
             GrantTypes     = request.GrantTypes,
-            RedirectUris   = request.RedirectUris,
-            OpenIdScopes   = MergeWithDefaults(additionalScopes),
+            RedirectUris   = hasClientCredentials ? [] : request.RedirectUris,
+            OpenIdScopes   = resolvedScopes,
             TokenExpiry    = request.TokenExpiry
         };
 

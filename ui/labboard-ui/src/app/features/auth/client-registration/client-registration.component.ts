@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { trigger, transition, style, animate } from '@angular/animations';
 import { AuthService, ClientAppRequest, ClientAppResponse } from '../../../core/services/auth.service';
 import { FieldErrorPipe } from '../../../shared/pipes/field-error.pipe';
 
@@ -64,7 +65,18 @@ function authCodeAndRefreshTokenRequiresOfflineAccess(form: AbstractControl): Va
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, FieldErrorPipe],
   templateUrl: './client-registration.component.html',
-  styleUrl: './client-registration.component.scss'
+  styleUrl: './client-registration.component.scss',
+  animations: [
+    trigger('slideDown', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-10px)' }),
+        animate('240ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ]),
+      transition(':leave', [
+        animate('180ms ease-in', style({ opacity: 0, transform: 'translateY(-10px)' }))
+      ])
+    ])
+  ]
 })
 export class ClientRegistrationComponent implements OnInit {
   form!: FormGroup;
@@ -119,6 +131,11 @@ export class ClientRegistrationComponent implements OnInit {
 
   get showNeedsOfflineAccessScope(): boolean {
     return this.crossFieldTouched && !!this.form.errors?.['needsOfflineAccessScope'];
+  }
+
+  get showRedirectAndScopes(): boolean {
+    const gt = this.ctrl('grantTypes').value as string[];
+    return gt.includes('authorization_code') || gt.includes('refresh_token');
   }
 
   // ── Chip toggle ───────────────────────────────────────────────────────────

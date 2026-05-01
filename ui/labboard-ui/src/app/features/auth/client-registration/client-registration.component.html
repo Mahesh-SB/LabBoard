@@ -125,43 +125,49 @@
           </div>
         </div>
 
-        <!-- Redirect URIs -->
-        <div class="form-group">
-          <label>Redirect URIs</label>
-          <div class="uri-list" formArrayName="redirectUris">
-            <div *ngFor="let ctrl of redirectUrisArray.controls; let i = index" class="uri-row">
-              <div class="uri-input-col">
-                <div class="input-wrapper" [class.input-error]="uriControl(i).invalid && uriControl(i).touched">
-                  <span class="input-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-                      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-                    </svg>
-                  </span>
-                  <input type="text" [formControlName]="i" placeholder="https://yourapp.com/callback" />
-                </div>
-                <span class="field-error">{{ uriControl(i) | fieldError }}</span>
-              </div>
-              <button type="button" class="btn-remove" (click)="removeRedirectUri(i)"
-                      [disabled]="redirectUrisArray.length === 1 || isLoading">✕</button>
-            </div>
-            <button type="button" class="btn-add-uri" (click)="addRedirectUri()" [disabled]="isLoading">+ Add URI</button>
-          </div>
-        </div>
+        <!-- Redirect URIs + OpenID Scopes — only for authorization_code / refresh_token -->
+        <div *ngIf="showRedirectAndScopes" @slideDown>
 
-        <!-- Additional OpenID Scopes -->
-        <div class="form-group">
-          <label>Additional OpenID Scopes
-            <span class="hint">(OpenId, Profile, Email auto-added)</span>
-          </label>
-          <div class="chip-group">
-            <button type="button" *ngFor="let s of openIdScopeOptions"
-                    class="chip scope-chip" [class.active]="isChipSelected('additionalOpenIdScopes', s)"
-                    [disabled]="isLoading"
-                    (click)="toggleChip('additionalOpenIdScopes', s)">
-              {{ s }}
-            </button>
+          <div class="form-group">
+            <label>Redirect URIs <span class="hint">(optional for client credentials)</span></label>
+            <div class="uri-list" formArrayName="redirectUris">
+              <div *ngFor="let ctrl of redirectUrisArray.controls; let i = index" class="uri-row">
+                <div class="uri-input-col">
+                  <div class="input-wrapper" [class.input-error]="uriControl(i).invalid && uriControl(i).touched">
+                    <span class="input-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                      </svg>
+                    </span>
+                    <input type="text" [formControlName]="i" placeholder="https://yourapp.com/callback" />
+                  </div>
+                  <span class="field-error">{{ uriControl(i) | fieldError }}</span>
+                </div>
+                <button type="button" class="btn-remove" (click)="removeRedirectUri(i)"
+                        [disabled]="redirectUrisArray.length === 1 || isLoading">✕</button>
+              </div>
+              <button type="button" class="btn-add-uri" (click)="addRedirectUri()" [disabled]="isLoading">
+                <span class="add-icon">+</span>
+                Add Redirect URI
+              </button>
+            </div>
           </div>
+
+          <div class="form-group">
+            <label>Additional OpenID Scopes
+              <span class="hint">(OpenId, Profile, Email auto-added)</span>
+            </label>
+            <div class="chip-group">
+              <button type="button" *ngFor="let s of openIdScopeOptions"
+                      class="chip scope-chip" [class.active]="isChipSelected('additionalOpenIdScopes', s)"
+                      [disabled]="isLoading"
+                      (click)="toggleChip('additionalOpenIdScopes', s)">
+                {{ s }}
+              </button>
+            </div>
+          </div>
+
         </div>
 
         <!-- Submit -->
