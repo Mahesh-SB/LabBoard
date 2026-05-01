@@ -258,44 +258,6 @@ If the repository is public or the config file is leaked, the secret is exposed.
 
 ---
 
-## 11. API Documentation — OpenAPI, Swagger, Scalar
-
-**Q: What is OpenAPI?**
-
-OpenAPI (formerly known as the Swagger Specification) is a **language-agnostic standard** for describing REST APIs in JSON or YAML. It defines endpoints, request/response models, authentication, and more.
-
-> Key point: OpenAPI is the **specification standard** — not a tool or library.
-
-**Q: What is the difference between Swagger, Swagger UI, and Scalar?**
-
-A common interview mistake is using "Swagger" to mean everything. They are three separate concerns:
-
-| Layer | What it is | Examples |
-|---|---|---|
-| **OpenAPI Specification** | The standard/format (JSON or YAML) | `openapi/v1.json` |
-| **Spec Generator** | Library that reads your code and produces the spec | `Microsoft.AspNetCore.OpenApi`, `Swashbuckle` |
-| **UI Explorer** | Reads the spec and renders an interactive browser UI | **Scalar**, Swagger UI, Redoc |
-
-**Q: What is Scalar and why is it preferred over Swagger UI?**
-
-Scalar is a modern **API Reference UI / OpenAPI UI Explorer**. It replaces Swagger UI as the interactive documentation layer.
-
-| | Swagger UI | Scalar |
-|---|---|---|
-| UI design | Functional but dated | Clean, modern |
-| Dark mode | No | Yes |
-| Request builder | Basic | Richer — shows curl, code snippets |
-| Active development | Slowing down | Actively maintained |
-| .NET default | Was default pre-.NET 9 | Default in .NET 9/10 templates |
-
-> In our project: `Microsoft.AspNetCore.OpenApi` **generates** the spec at `/openapi/v1.json`. Scalar **displays** it at `/scalar/v1`.
-
-**Q: How do you describe the full setup in one sentence?**
-
-> "We use `Microsoft.AspNetCore.OpenApi` to generate the OpenAPI specification from our controllers, and Scalar as the UI explorer to browse and test endpoints interactively."
-
----
-
 ## Quick Reference — Flow Decision Tree
 
 ```

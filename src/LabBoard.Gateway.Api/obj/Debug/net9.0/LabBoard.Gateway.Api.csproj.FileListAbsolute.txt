@@ -49,4 +49,4 @@ C:\D Drive\Project\BackEND\LabBoard\src\LabBoard.Gateway.Api\obj\Debug\net9.0\re
 C:\D Drive\Project\BackEND\LabBoard\src\LabBoard.Gateway.Api\obj\Debug\net9.0\LabBoard.Gateway.Api.pdb
 C:\D Drive\Project\BackEND\LabBoard\src\LabBoard.Gateway.Api\obj\Debug\net9.0\LabBoard.Gateway.Api.genruntimeconfig.cache
 C:\D Drive\Project\BackEND\LabBoard\src\LabBoard.Gateway.Api\obj\Debug\net9.0\ref\LabBoard.Gateway.Api.dll
-C:\D Drive\Project\BackEND\LabBoard\src\LabBoard.Gateway.Api\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+C:\D Drive\Project\BackEND\LabBoard\src\LabBoard.Gateway.Api\obj\Debug\net9.0\LabBoard.Gateway.Api.sourcelink.json

@@ -19,7 +19,18 @@
       "PowerShell(Rename-Item *)",
       "Bash(dotnet restore *)",
       "Bash(npx ng *)",
-      "PowerShell([System.IO.File]::ReadAllText\\(\"C:\\\\D Drive\\\\Project\\\\BackEND\\\\LabBoard\\\\public.key\"\\))"
+      "PowerShell([System.IO.File]::ReadAllText\\(\"C:\\\\D Drive\\\\Project\\\\BackEND\\\\LabBoard\\\\public.key\"\\))",
+      "Bash(grep -v '\\\\.user$')",
+      "Bash(grep -v '\\\\.suo$')",
+      "Bash(grep -v '\\\\.vsidx$')",
+      "Bash(grep -v '\\\\.v2$')",
+      "Bash(grep -v '\\\\.v10\\\\.bin$')",
+      "Bash(grep -v 'applicationhost\\\\.config$')",
+      "Bash(xargs grep *)",
+      "Bash(npx tsc *)",
+      "Bash(git stash *)",
+      "Bash(git checkout *)",
+      "Bash(netstat -ano)"
     ]
   }
 }
