@@ -54,7 +54,7 @@ public class TokenService : ITokenService, IDisposable
 
     public TokenResponse GenerateClientToken(ClientAppResponse client)
     {
-        var scopes = client.ApiScopes.Select(s => s.ToString().ToLowerInvariant()).ToList();
+        var scopes = new List<string>();
 
         var claims = new[]
         {

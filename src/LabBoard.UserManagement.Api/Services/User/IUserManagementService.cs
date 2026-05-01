@@ -5,6 +5,7 @@ namespace LabBoard.UserManagement.Api.Services.User;
 
 public interface IUserManagementService
 {
+    Task<UserResponse> RegisterAsync(UserRegisterRequest request);
     Task<IEnumerable<UserResponse>> GetAllAsync();
     Task<UserResponse?> GetByIdAsync(Guid id);
     Task<UserResponse?> UpdateRoleAsync(Guid id, UserRole role);

@@ -55,7 +55,7 @@ export interface ApiPrivilegeRequest {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly usersUrl = `${environment.apiBaseUrl}/api/users`;
+  private readonly usersUrl = `${environment.userManagementApiUrl}/api/users`;
   private readonly clientAppsUrl = `${environment.apiBaseUrl}/api/clientapps`;
 
   constructor(private http: HttpClient) {}

@@ -8,32 +8,8 @@ namespace LabBoard.Auth.Api.Services.User;
 
 public class UserService(IWebHostEnvironment env) : IUserService
 {
-    private readonly string _storePath = Path.Combine(env.ContentRootPath, "Database", "userStore.json");
+    private readonly string _storePath = Path.Combine(env.ContentRootPath, "..", "LabBoard.UserManagement.Api", "Database", "userStore.json");
     private readonly JsonSerializerOptions _jsonOptions = new() { WriteIndented = true };
-
-    public async Task<UserResponse> RegisterAsync(UserRegisterRequest request)
-    {
-        var users = await LoadAsync();
-
-        if (users.Any(u => u.Email.Equals(request.Email, StringComparison.OrdinalIgnoreCase)))
-            throw new InvalidOperationException("A user with this email already exists.");
-
-        var user = new UserEntity
-        {
-            FullName = request.FullName,
-            Gender = request.Gender,
-            Age = request.Age,
-            Email = request.Email.ToLowerInvariant(),
-            Phone = request.Phone,
-            PasswordHash = HashPassword(request.Password),
-            Role = request.Role
-        };
-
-        users.Add(user);
-        await SaveAsync(users);
-
-        return ToResponse(user);
-    }
 
     public async Task<UserResponse?> GetByIdAsync(Guid id)
     {

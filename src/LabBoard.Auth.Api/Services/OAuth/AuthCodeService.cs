@@ -23,14 +23,6 @@ public class AuthCodeService(IClientAppService clientAppService, IWebHostEnviron
         ["offline_access"] = OpenIdScope.OfflineAccess
     };
 
-    private static readonly Dictionary<string, ApiScope> ApiScopeMap = new(StringComparer.OrdinalIgnoreCase)
-    {
-        ["admin"]  = ApiScope.Admin,
-        ["add"]    = ApiScope.Add,
-        ["update"] = ApiScope.Update,
-        ["delete"] = ApiScope.Delete
-    };
-
     public async Task<ClientAppResponse> ValidateClientAsync(string clientId, string redirectUri, string scope)
     {
         var client = await clientAppService.GetByClientIdAsync(clientId)
@@ -54,11 +46,6 @@ public class AuthCodeService(IClientAppService clientAppService, IWebHostEnviron
             if (OpenIdScopeMap.TryGetValue(s, out var openIdScope))
             {
                 if (!client.OpenIdScopes.Contains(openIdScope))
-                    throw new InvalidOperationException($"Scope '{s}' is not allowed for this client.");
-            }
-            else if (ApiScopeMap.TryGetValue(s, out var apiScope))
-            {
-                if (!client.ApiScopes.Contains(apiScope))
                     throw new InvalidOperationException($"Scope '{s}' is not allowed for this client.");
             }
             else
