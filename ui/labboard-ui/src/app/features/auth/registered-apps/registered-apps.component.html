@@ -1,0 +1,141 @@
+<div class="apps-wrapper">
+
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="apps-layout">
+
+    <!-- ── Left: page header ────────────────────────── -->
+    <aside class="left-col">
+      <div class="page-header">
+        <div class="header-icon">📋</div>
+        <h1>Registered<br>Applications</h1>
+        <p>All OAuth2 client apps registered with LabBoard Auth.</p>
+      </div>
+    </aside>
+
+    <div class="col-divider"></div>
+
+    <!-- ── Right: cards ─────────────────────────────── -->
+    <main class="right-col">
+
+      @if (isLoading) {
+        <div class="state-box">
+          <div class="spinner"></div>
+          <span>Loading applications…</span>
+        </div>
+      } @else if (errorMessage) {
+        <div class="state-box error">⚠️ {{ errorMessage }}</div>
+      } @else if (apps.length === 0) {
+        <div class="state-box">
+          <div class="empty-icon">🗂️</div>
+          <span>No applications registered yet.</span>
+        </div>
+      } @else {
+        @for (app of apps; track app.id) {
+          <div class="app-card" [class.inactive]="!app.isActive">
+
+            <!-- ── Identity: name / logo+desc / badge ── -->
+            <div class="card-identity">
+              <span class="app-name">{{ app.appName }}</span>
+              <div class="identity-logo-row">
+                <div class="app-avatar">{{ app.appName.charAt(0).toUpperCase() }}</div>
+                <span class="app-desc">{{ app.appDescription || 'No description provided' }}</span>
+              </div>
+              <span class="status-badge" [class.active]="app.isActive">
+                <span class="status-dot"></span>
+                {{ app.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </div>
+
+            <!-- ── Divider ──────────────────────────────── -->
+            <div class="card-divider"></div>
+
+            <!-- ── Details + action ─────────────────────── -->
+            <div class="card-details-panel">
+
+              <!-- Privilege button at the top -->
+              <div class="card-action">
+                <button class="btn-privilege" (click)="openPrivileges(app)">
+                  🔑 <span>Privileges</span>
+                </button>
+              </div>
+
+              <div class="card-details">
+
+                <!-- Client ID with copy -->
+                <div class="detail-row credential-row">
+                  <span class="detail-label">Client ID</span>
+                  <code class="detail-value">{{ app.clientId }}</code>
+                  <button class="btn-copy" (click)="copy(app.clientId, app.id + '_id')"
+                          [title]="isCopied(app.id + '_id') ? 'Copied!' : 'Copy Client ID'">
+                    @if (isCopied(app.id + '_id')) {
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                    } @else {
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2"/>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                      </svg>
+                    }
+                  </button>
+                </div>
+
+                <!-- Client Secret with copy -->
+                <div class="detail-row credential-row">
+                  <span class="detail-label">Client Secret</span>
+                  <code class="detail-value secret">{{ app.clientSecret }}</code>
+                  <button class="btn-copy" (click)="copy(app.clientSecret, app.id + '_secret')"
+                          [title]="isCopied(app.id + '_secret') ? 'Copied!' : 'Copy Client Secret'">
+                    @if (isCopied(app.id + '_secret')) {
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                    } @else {
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2"/>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                      </svg>
+                    }
+                  </button>
+                </div>
+
+                <div class="detail-row">
+                  <span class="detail-label">Grant Types</span>
+                  <div class="chips">
+                    @for (g of app.grantTypes; track g) {
+                      <span class="chip grant">{{ g }}</span>
+                    }
+                  </div>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Token Expiry</span>
+                  <span class="detail-value">{{ app.tokenExpiry }}s</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Registered</span>
+                  <span class="detail-value">{{ formatDate(app.createdAt) }}</span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        }
+      }
+
+    </main>
+
+  </div>
+</div>
+
+@if (selectedApp) {
+  <app-privilege-sidebar
+    [selectedApp]="selectedApp"
+    [allApps]="apps"
+    (closed)="closeSidebar()"
+    (saved)="closeSidebar()">
+  </app-privilege-sidebar>
+}

@@ -50,4 +50,22 @@ public class ClientAppsController(IClientAppService clientAppService) : Controll
         var deleted = await clientAppService.DeleteAsync(id);
         return deleted ? NoContent() : NotFound();
     }
+
+    [HttpGet("{id:guid}/privileges")]
+    [ProducesResponseType(typeof(ApiPrivilegeResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetPrivileges(Guid id)
+    {
+        var result = await clientAppService.GetPrivilegesAsync(id);
+        return result is null ? NotFound() : Ok(result);
+    }
+
+    [HttpPut("{id:guid}/privileges")]
+    [ProducesResponseType(typeof(ApiPrivilegeResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> SetPrivileges(Guid id, [FromBody] ApiPrivilegeRequest request)
+    {
+        var result = await clientAppService.SetPrivilegesAsync(id, request);
+        return result is null ? NotFound() : Ok(result);
+    }
 }

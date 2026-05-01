@@ -1,0 +1,148 @@
+<div class="sidebar-backdrop" (click)="close()"></div>
+
+<aside class="sidebar">
+
+  <!-- ── Header ─────────────────────────────────────────────────────── -->
+  <div class="sidebar-header">
+    <div class="sidebar-title">
+      <span class="title-icon">🔑</span>
+      <div>
+        <div class="title-main">Privileges</div>
+        <div class="title-sub">{{ selectedApp?.appName }}</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <!-- Edit toggle — only visible in view mode -->
+      @if (!isEditMode) {
+        <button class="btn-edit-toggle" (click)="enableEdit()" title="Edit privileges">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+          </svg>
+          Edit
+        </button>
+      }
+      <button class="btn-close" (click)="close()">✕</button>
+    </div>
+  </div>
+
+  <!-- ── Body ───────────────────────────────────────────────────────── -->
+  <div class="sidebar-body">
+
+    @if (errorMessage) {
+      <div class="alert alert-error">⚠️ {{ errorMessage }}</div>
+    }
+    @if (successMessage) {
+      <div class="alert alert-success">✅ {{ successMessage }}</div>
+    }
+
+    <!-- ══════════════════════════════════════
+         VIEW MODE (read-only)
+    ═══════════════════════════════════════ -->
+    @if (!isEditMode) {
+
+      <p class="section-hint">
+        APIs that <strong>{{ selectedApp?.appName }}</strong> is currently allowed to call.
+      </p>
+
+      @if (isLoading) {
+        <div class="loading">Loading…</div>
+      } @else if (grantedRows.length === 0) {
+        <div class="empty-state">
+          <span class="empty-icon">🔒</span>
+          <span>No privileges configured yet.<br>Click <strong>Edit</strong> to set them.</span>
+        </div>
+      } @else {
+        <div class="view-list">
+          @for (row of grantedRows; track row.app.id) {
+            <div class="view-item">
+              <div class="view-item-top">
+                <div class="view-avatar">{{ row.app.appName.charAt(0).toUpperCase() }}</div>
+                <span class="view-app-name">{{ row.app.appName }}</span>
+              </div>
+              <div class="view-perms">
+                @if (row.canRead)   { <span class="perm-badge read">👁 Read</span> }
+                @if (row.canUpdate) { <span class="perm-badge update">✏️ Update</span> }
+                @if (row.canDelete) { <span class="perm-badge delete">🗑 Delete</span> }
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+    <!-- ══════════════════════════════════════
+         EDIT MODE
+    ═══════════════════════════════════════ -->
+    } @else {
+
+      <p class="section-hint">
+        Select which APIs <strong>{{ selectedApp?.appName }}</strong> can call and set their permissions.
+      </p>
+
+      <div class="search-box">
+        <span class="search-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </span>
+        <input type="text" placeholder="Search APIs…" [(ngModel)]="searchQuery" />
+        @if (searchQuery) {
+          <button class="clear-btn" (click)="searchQuery = ''">✕</button>
+        }
+      </div>
+
+      @if (isLoading) {
+        <div class="loading">Loading…</div>
+      } @else {
+        <div class="api-list">
+          @for (app of otherApps; track app.id) {
+            <div class="api-item" [class.selected]="isSelected(app)">
+              <div class="api-item-top">
+                <label class="api-check">
+                  <input type="checkbox" [checked]="isSelected(app)" (change)="toggleApp(app)" />
+                  <span class="api-name">{{ app.appName }}</span>
+                </label>
+                <span class="api-client-id">{{ app.clientId | slice:0:12 }}…</span>
+              </div>
+              @if (isSelected(app)) {
+                <div class="privilege-row">
+                  <label class="priv-check">
+                    <input type="checkbox" [(ngModel)]="getRow(app)!.canRead" />
+                    <span class="priv-label read">Read</span>
+                  </label>
+                  <label class="priv-check">
+                    <input type="checkbox" [(ngModel)]="getRow(app)!.canUpdate" />
+                    <span class="priv-label update">Update</span>
+                  </label>
+                  <label class="priv-check">
+                    <input type="checkbox" [(ngModel)]="getRow(app)!.canDelete" />
+                    <span class="priv-label delete">Delete</span>
+                  </label>
+                </div>
+              }
+            </div>
+          }
+          @if (otherApps.length === 0) {
+            <div class="empty">No APIs found.</div>
+          }
+        </div>
+      }
+
+    }
+
+  </div>
+
+  <!-- ── Footer ─────────────────────────────────────────────────────── -->
+  <div class="sidebar-footer">
+    @if (isEditMode) {
+      <button class="btn-cancel" (click)="cancelEdit()">Cancel</button>
+      <button class="btn-save" (click)="save()" [disabled]="isSaving">
+        {{ isSaving ? 'Saving…' : 'Save Privileges' }}
+      </button>
+    } @else {
+      <button class="btn-save" (click)="close()">Close</button>
+    }
+  </div>
+
+</aside>

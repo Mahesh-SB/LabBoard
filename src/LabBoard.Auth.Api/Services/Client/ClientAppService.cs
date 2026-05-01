@@ -8,6 +8,7 @@ namespace LabBoard.Auth.Api.Services.Client;
 public class ClientAppService(IWebHostEnvironment env) : IClientAppService
 {
     private readonly string _storePath = Path.Combine(env.ContentRootPath, "Database", "clientAppStore.json");
+    private readonly string _privilegeStorePath = Path.Combine(env.ContentRootPath, "Database", "privilegeStore.json");
     private readonly JsonSerializerOptions _jsonOptions = new() { WriteIndented = true };
 
     public async Task<ClientAppResponse> RegisterAsync(ClientAppRequest request)
@@ -50,7 +51,6 @@ public class ClientAppService(IWebHostEnvironment env) : IClientAppService
             GrantTypes     = request.GrantTypes,
             RedirectUris   = request.RedirectUris,
             OpenIdScopes   = MergeWithDefaults(additionalScopes),
-            ApiScopes      = request.ApiScopes,
             TokenExpiry    = request.TokenExpiry
         };
 
@@ -101,6 +101,52 @@ public class ClientAppService(IWebHostEnvironment env) : IClientAppService
         return [.. merged];
     }
 
+    public async Task<ApiPrivilegeResponse?> GetPrivilegesAsync(Guid id)
+    {
+        var apps = await LoadAsync();
+        var app = apps.FirstOrDefault(a => a.Id == id);
+        if (app is null) return null;
+
+        var all = await LoadPrivilegesAsync();
+        var entries = all
+            .Where(p => p.SourceClientId == app.ClientId)
+            .Select(p => new ApiPrivilegeEntryResponse
+            {
+                TargetClientId = p.TargetClientId,
+                TargetAppName  = apps.FirstOrDefault(a => a.ClientId == p.TargetClientId)?.AppName ?? p.TargetClientId,
+                CanRead        = p.CanRead,
+                CanUpdate      = p.CanUpdate,
+                CanDelete      = p.CanDelete
+            }).ToList();
+
+        return new ApiPrivilegeResponse { SourceClientId = app.ClientId, Privileges = entries };
+    }
+
+    public async Task<ApiPrivilegeResponse?> SetPrivilegesAsync(Guid id, ApiPrivilegeRequest request)
+    {
+        var apps = await LoadAsync();
+        var app = apps.FirstOrDefault(a => a.Id == id);
+        if (app is null) return null;
+
+        var all = await LoadPrivilegesAsync();
+        all.RemoveAll(p => p.SourceClientId == app.ClientId);
+
+        foreach (var entry in request.Privileges)
+        {
+            all.Add(new ApiPrivilege
+            {
+                SourceClientId = app.ClientId,
+                TargetClientId = entry.TargetClientId,
+                CanRead        = entry.CanRead,
+                CanUpdate      = entry.CanUpdate,
+                CanDelete      = entry.CanDelete
+            });
+        }
+
+        await SavePrivilegesAsync(all);
+        return await GetPrivilegesAsync(id);
+    }
+
     private async Task<List<ClientApp>> LoadAsync()
     {
         if (!File.Exists(_storePath)) return [];
@@ -114,6 +160,19 @@ public class ClientAppService(IWebHostEnvironment env) : IClientAppService
         await File.WriteAllTextAsync(_storePath, json);
     }
 
+    private async Task<List<ApiPrivilege>> LoadPrivilegesAsync()
+    {
+        if (!File.Exists(_privilegeStorePath)) return [];
+        var json = await File.ReadAllTextAsync(_privilegeStorePath);
+        return JsonSerializer.Deserialize<List<ApiPrivilege>>(json) ?? [];
+    }
+
+    private async Task SavePrivilegesAsync(List<ApiPrivilege> privileges)
+    {
+        var json = JsonSerializer.Serialize(privileges, _jsonOptions);
+        await File.WriteAllTextAsync(_privilegeStorePath, json);
+    }
+
     private static ClientAppResponse ToResponse(ClientApp app) => new()
     {
         Id             = app.Id,
@@ -124,7 +183,6 @@ public class ClientAppService(IWebHostEnvironment env) : IClientAppService
         GrantTypes     = app.GrantTypes,
         RedirectUris   = app.RedirectUris,
         OpenIdScopes   = app.OpenIdScopes,
-        ApiScopes      = app.ApiScopes,
         TokenExpiry    = app.TokenExpiry,
         IsActive       = app.IsActive,
         CreatedAt      = app.CreatedAt

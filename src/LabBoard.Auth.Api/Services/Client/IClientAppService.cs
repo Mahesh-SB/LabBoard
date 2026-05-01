@@ -10,4 +10,6 @@ public interface IClientAppService
     Task<ClientAppResponse?> GetByClientIdAsync(string clientId);
     Task<IEnumerable<ClientAppResponse>> GetAllAsync();
     Task<bool> DeleteAsync(Guid id);
+    Task<ApiPrivilegeResponse?> GetPrivilegesAsync(Guid id);
+    Task<ApiPrivilegeResponse?> SetPrivilegesAsync(Guid id, ApiPrivilegeRequest request);
 }

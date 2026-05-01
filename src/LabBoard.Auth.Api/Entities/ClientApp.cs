@@ -12,7 +12,6 @@ internal class ClientApp
     public List<string> GrantTypes { get; set; } = [];
     public List<string> RedirectUris { get; set; } = [];
     public List<OpenIdScope> OpenIdScopes { get; set; } = [];
-    public List<ApiScope> ApiScopes { get; set; } = [];
     public int TokenExpiry { get; set; } = 3600;
     public bool IsActive { get; set; } = true;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

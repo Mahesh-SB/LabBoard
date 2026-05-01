@@ -16,7 +16,6 @@
       1,
       2
     ],
-    "ApiScopes": [],
     "TokenExpiry": 3600,
     "IsActive": true,
     "CreatedAt": "2026-04-25T00:00:00.000000Z"
@@ -32,16 +31,13 @@
       "refresh_token"
     ],
     "RedirectUris": [
-      "http://localhost:5185/Api/TicketLabApi/callback "
+      "http://localhost:5185/Api/TicketLabApi/callback"
     ],
     "OpenIdScopes": [
       0,
       1,
       2,
       5
-    ],
-    "ApiScopes": [
-      2
     ],
     "TokenExpiry": 3600,
     "IsActive": true,

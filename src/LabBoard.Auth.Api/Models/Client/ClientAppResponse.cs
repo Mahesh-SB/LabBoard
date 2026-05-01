@@ -12,7 +12,6 @@ public class ClientAppResponse
     public List<string> GrantTypes { get; set; } = [];
     public List<string> RedirectUris { get; set; } = [];
     public List<OpenIdScope> OpenIdScopes { get; set; } = [];
-    public List<ApiScope> ApiScopes { get; set; } = [];
     public int TokenExpiry { get; set; }
     public bool IsActive { get; set; }
     public DateTime CreatedAt { get; set; }

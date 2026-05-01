@@ -149,42 +149,19 @@
           </div>
         </div>
 
-        <!-- Scopes Row -->
-        <div class="form-row">
-
-          <!-- API Scopes -->
-          <div class="form-group">
-            <label>API Scopes <span class="required">*</span></label>
-            <div class="chip-group">
-              <button type="button" *ngFor="let s of apiScopeOptions"
-                      class="chip scope-chip" [class.active]="isChipSelected('apiScopes', s)"
-                      [disabled]="isLoading"
-                      (click)="toggleChip('apiScopes', s)">
-                <ng-container *ngIf="s === 'Admin'">👑 </ng-container>
-                <ng-container *ngIf="s === 'Add'">➕ </ng-container>
-                <ng-container *ngIf="s === 'Update'">✏️ </ng-container>
-                <ng-container *ngIf="s === 'Delete'">🗑️ </ng-container>
-                {{ s }}
-              </button>
-            </div>
-            <span class="field-error">{{ ctrl('apiScopes') | fieldError }}</span>
+        <!-- Additional OpenID Scopes -->
+        <div class="form-group">
+          <label>Additional OpenID Scopes
+            <span class="hint">(OpenId, Profile, Email auto-added)</span>
+          </label>
+          <div class="chip-group">
+            <button type="button" *ngFor="let s of openIdScopeOptions"
+                    class="chip scope-chip" [class.active]="isChipSelected('additionalOpenIdScopes', s)"
+                    [disabled]="isLoading"
+                    (click)="toggleChip('additionalOpenIdScopes', s)">
+              {{ s }}
+            </button>
           </div>
-
-          <!-- Additional OpenID Scopes -->
-          <div class="form-group">
-            <label>Additional OpenID Scopes
-              <span class="hint">(OpenId, Profile, Email auto-added)</span>
-            </label>
-            <div class="chip-group">
-              <button type="button" *ngFor="let s of openIdScopeOptions"
-                      class="chip scope-chip" [class.active]="isChipSelected('additionalOpenIdScopes', s)"
-                      [disabled]="isLoading"
-                      (click)="toggleChip('additionalOpenIdScopes', s)">
-                {{ s }}
-              </button>
-            </div>
-          </div>
-
         </div>
 
         <!-- Submit -->

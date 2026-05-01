@@ -17,8 +17,5 @@ public class ClientAppRequest
 
     public List<OpenIdScope> AdditionalOpenIdScopes { get; set; } = [];
 
-    [Required]
-    public List<ApiScope> ApiScopes { get; set; } = [];
-
     public int TokenExpiry { get; set; } = 3600;
 }

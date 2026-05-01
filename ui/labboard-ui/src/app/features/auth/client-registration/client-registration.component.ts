@@ -74,7 +74,6 @@ export class ClientRegistrationComponent implements OnInit {
   copied: 'clientId' | 'clientSecret' | null = null;
 
   readonly grantTypeOptions   = ['client_credentials', 'authorization_code', 'refresh_token'];
-  readonly apiScopeOptions    = ['Admin', 'Add', 'Update', 'Delete'];
   readonly openIdScopeOptions = ['Phone', 'Address', 'OfflineAccess'];
 
   constructor(private fb: FormBuilder, private authService: AuthService) {}
@@ -86,7 +85,6 @@ export class ClientRegistrationComponent implements OnInit {
         appDescription:         ['', [Validators.maxLength(500)]],
         tokenExpiry:            [3600, [Validators.required, Validators.min(1), Validators.max(86400)]],
         grantTypes:             [[] as string[], [atLeastOneValidator]],
-        apiScopes:              [[] as string[], [atLeastOneValidator]],
         additionalOpenIdScopes: [[] as string[]],
         redirectUris:           this.fb.array([this.createUriControl()])
       },
@@ -125,7 +123,7 @@ export class ClientRegistrationComponent implements OnInit {
 
   // ── Chip toggle ───────────────────────────────────────────────────────────
 
-  toggleChip(controlName: 'grantTypes' | 'apiScopes' | 'additionalOpenIdScopes', value: string): void {
+  toggleChip(controlName: 'grantTypes' | 'additionalOpenIdScopes', value: string): void {
     if (this.isLoading) return;
     const control = this.ctrl(controlName);
     const current = control.value as string[];
@@ -179,7 +177,6 @@ export class ClientRegistrationComponent implements OnInit {
       grantTypes:             v.grantTypes,
       redirectUris:           (v.redirectUris as string[]).filter((u: string) => u.trim()),
       additionalOpenIdScopes: v.additionalOpenIdScopes,
-      apiScopes:              v.apiScopes,
       tokenExpiry:            v.tokenExpiry
     };
 
@@ -188,7 +185,7 @@ export class ClientRegistrationComponent implements OnInit {
       next: (response) => {
         this.isLoading = false;
         this.registeredApp = response;
-        this.form.reset({ tokenExpiry: 3600, grantTypes: [], apiScopes: [], additionalOpenIdScopes: [] });
+        this.form.reset({ tokenExpiry: 3600, grantTypes: [], additionalOpenIdScopes: [] });
         this.redirectUrisArray.clear();
         this.redirectUrisArray.push(this.createUriControl());
       },

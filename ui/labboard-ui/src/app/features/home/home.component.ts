@@ -23,10 +23,11 @@ export class HomeComponent {
   searchOpen  = false;
 
   private readonly searchItems: SearchItem[] = [
-    { icon: '🏠', title: 'Home',              desc: 'Dashboard & overview',      route: '/',                group: 'General' },
-    { icon: '🖥️', title: 'Client App',        desc: 'Register OAuth clients',    route: '/client-register', group: 'Auth'    },
-    { icon: '👤', title: 'User Registration', desc: 'Create & manage users',     route: '/register',        group: 'Auth'    },
-    { icon: '🎫', title: 'Ticket Master',     desc: 'Book & manage tickets',     route: '/tickets/book',    group: 'Apps'    },
+    { icon: '🏠', title: 'Home',              desc: 'Dashboard & overview',      route: '/',                 group: 'General' },
+    { icon: '🖥️', title: 'Client App',        desc: 'Register OAuth clients',    route: '/client-register',  group: 'Auth'    },
+    { icon: '📋', title: 'Registered Apps',   desc: 'View apps & set privileges', route: '/registered-apps', group: 'Auth'    },
+    { icon: '👤', title: 'User Registration', desc: 'Create & manage users',     route: '/register',         group: 'Auth'    },
+    { icon: '🎫', title: 'Ticket Master',     desc: 'Book & manage tickets',     route: '/tickets/book',     group: 'Apps'    },
   ];
 
   get results(): SearchItem[] {
@@ -105,6 +106,13 @@ export class HomeComponent {
       desc: 'Register & manage OAuth client applications',
       route: '/client-register',
       gradient: 'linear-gradient(135deg, #818cf8, #6c63ff)',
+    },
+    {
+      icon: '📋',
+      title: 'Registered Apps',
+      desc: 'View registered apps & set API privileges',
+      route: '/registered-apps',
+      gradient: 'linear-gradient(135deg, #f59e0b, #d97706)',
     },
     {
       icon: '👤',
