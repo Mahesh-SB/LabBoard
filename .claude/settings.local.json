@@ -30,7 +30,9 @@
       "Bash(npx tsc *)",
       "Bash(git stash *)",
       "Bash(git checkout *)",
-      "Bash(netstat -ano)"
+      "Bash(netstat -ano)",
+      "Bash(git rm *)",
+      "Bash(git add *)"
     ]
   }
 }
