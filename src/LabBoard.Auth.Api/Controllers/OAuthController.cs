@@ -1,35 +1,28 @@
 using LabBoard.Auth.Api.Helpers;
-using LabBoard.Auth.Api.Models.Client;
 using LabBoard.Auth.Api.Models.OAuth;
-using LabBoard.Auth.Api.Services.Client;
 using LabBoard.Auth.Api.Services.OAuth;
-using LabBoard.Auth.Api.Services.User;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LabBoard.Auth.Api.Controllers;
 
 [Route("oauth")]
-public class OAuthController(
-    IAuthCodeService authCodeService,
-    IClientAppService clientAppService,
-    IUserService userService,
-    ITokenService tokenService) : ControllerBase
+public class OAuthController(IOAuthService oauthService) : ControllerBase
 {
-    // Step 1 — browser hits this URL, auth server validates client, returns HTML login page
+    // Step 1 — browser hits this URL, auth server validates client and returns the login page
     [HttpGet("authorize")]
     public async Task<ContentResult> Authorize([FromQuery] AuthorizeQueryParams query)
     {
         if (!query.ResponseType.Equals("code", StringComparison.OrdinalIgnoreCase))
             return HtmlError("Unsupported response_type. Only 'code' is supported.");
 
-        if (string.IsNullOrWhiteSpace(query.ClientId) ||
+        if (string.IsNullOrWhiteSpace(query.ClientId)    ||
             string.IsNullOrWhiteSpace(query.RedirectUri) ||
             string.IsNullOrWhiteSpace(query.Scope))
             return HtmlError("Missing required parameters: client_id, redirect_uri, scope.");
 
         try
         {
-            var client = await authCodeService.ValidateClientAsync(query.ClientId, query.RedirectUri, query.Scope);
+            var client = await oauthService.ValidateAuthorizeRequestAsync(query.ClientId, query.RedirectUri, query.Scope);
             return Html(LoginPageHtml.Build(client.AppName, query.ClientId, query.RedirectUri, query.Scope, query.State));
         }
         catch (InvalidOperationException ex)
@@ -38,42 +31,35 @@ public class OAuthController(
         }
     }
 
-    // Step 2 — login form submits here, auth server validates credentials, issues code, redirects
+    // Step 2 — login form submits here, auth server validates credentials, issues code and redirects
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromForm] LoginFormRequest form)
     {
-        if (string.IsNullOrWhiteSpace(form.ClientId) ||
+        if (string.IsNullOrWhiteSpace(form.ClientId)    ||
             string.IsNullOrWhiteSpace(form.RedirectUri) ||
-            string.IsNullOrWhiteSpace(form.Scope) ||
-            string.IsNullOrWhiteSpace(form.Email) ||
+            string.IsNullOrWhiteSpace(form.Scope)       ||
+            string.IsNullOrWhiteSpace(form.Email)       ||
             string.IsNullOrWhiteSpace(form.Password))
             return HtmlError("Missing required form fields.");
 
-        ClientAppResponse client;
         try
         {
-            client = await authCodeService.ValidateClientAsync(form.ClientId, form.RedirectUri, form.Scope);
+            var result = await oauthService.ProcessLoginAsync(form);
+
+            if (result.IsInvalidCredentials)
+                return Html(LoginPageHtml.Build(
+                    result.AppName!, form.ClientId, form.RedirectUri, form.Scope, form.State,
+                    error: "Invalid email or password."));
+
+            return Redirect(result.RedirectUri!);
         }
         catch (InvalidOperationException ex)
         {
             return HtmlError(ex.Message);
         }
-
-        var user = await userService.ValidateCredentialsAsync(form.Email, form.Password);
-        if (user is null)
-        {
-            return Html(LoginPageHtml.Build(
-                client.AppName, form.ClientId, form.RedirectUri, form.Scope, form.State,
-                error: "Invalid email or password."));
-        }
-
-        var scopes = form.Scope.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
-        var code   = await authCodeService.GenerateCodeAsync(form.ClientId, user.Id, form.RedirectUri, scopes, form.State);
-
-        return Redirect(BuildRedirectUri(form.RedirectUri, code, form.State));
     }
 
-    // Step 3 — Gateway (BFF) exchanges auth code for a JWT server-to-server
+    // Step 3 — client exchanges auth code or client credentials for a JWT
     [HttpPost("token")]
     [Consumes("application/x-www-form-urlencoded")]
     [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
@@ -81,87 +67,18 @@ public class OAuthController(
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Token([FromForm] TokenRequest request)
     {
-        if (request.GrantType.Equals("authorization_code", StringComparison.OrdinalIgnoreCase))
-            return await HandleAuthorizationCode(request);
-
-        if (request.GrantType.Equals("client_credentials", StringComparison.OrdinalIgnoreCase))
-            return await HandleClientCredentials(request);
-
-        return BadRequest(new { error = "unsupported_grant_type" });
-    }
-
-    private async Task<IActionResult> HandleAuthorizationCode(TokenRequest request)
-    {
-        if (string.IsNullOrWhiteSpace(request.Code) ||
-            string.IsNullOrWhiteSpace(request.ClientId) ||
-            string.IsNullOrWhiteSpace(request.ClientSecret) ||
-            string.IsNullOrWhiteSpace(request.RedirectUri))
-            return BadRequest(new { error = "invalid_request", description = "Missing required parameters." });
-
-        var client = await clientAppService.GetByClientIdAsync(request.ClientId);
-        if (client is null || !client.IsActive || client.ClientSecret != request.ClientSecret)
-            return Unauthorized(new { error = "invalid_client" });
-
-        ConsumedAuthCode consumed;
         try
         {
-            consumed = await authCodeService.ConsumeAsync(request.Code, request.ClientId, request.RedirectUri);
+            return Ok(await oauthService.IssueTokenAsync(request));
         }
-        catch (InvalidOperationException ex)
+        catch (OAuthException ex) when (ex.HttpStatus == 401)
         {
-            return BadRequest(new { error = "invalid_grant", description = ex.Message });
+            return Unauthorized(new { error = ex.Error });
         }
-
-        var user = await userService.GetByIdAsync(consumed.UserId);
-        if (user is null)
-            return BadRequest(new { error = "invalid_grant", description = "User not found." });
-
-        return Ok(tokenService.Generate(user, client, consumed.Scopes));
-    }
-
-    private async Task<IActionResult> HandleClientCredentials(TokenRequest request)
-    {
-        if (string.IsNullOrWhiteSpace(request.ClientId) ||
-            string.IsNullOrWhiteSpace(request.ClientSecret))
-            return BadRequest(new { error = "invalid_request", description = "Missing client_id or client_secret." });
-
-        var client = await clientAppService.GetByClientIdAsync(request.ClientId);
-        if (client is null || !client.IsActive || client.ClientSecret != request.ClientSecret)
-            return Unauthorized(new { error = "invalid_client" });
-
-        if (!client.GrantTypes.Contains("client_credentials", StringComparer.OrdinalIgnoreCase))
-            return BadRequest(new { error = "unauthorized_client", description = "This client is not authorized for client_credentials grant." });
-
-        var privileges = await clientAppService.GetPrivilegesAsync(client.Id);
-        var scopes = BuildScopesFromPrivileges(privileges);
-
-        return Ok(tokenService.GenerateClientToken(client, scopes));
-    }
-
-    private static List<string> BuildScopesFromPrivileges(ApiPrivilegeResponse? privileges)
-    {
-        if (privileges?.Privileges is not { Count: > 0 })
-            return [];
-
-        var scopes = new List<string>();
-        foreach (var p in privileges.Privileges)
+        catch (OAuthException ex)
         {
-            // "User Management App" → "user_management_app"
-            var target = p.TargetAppName.ToLowerInvariant().Replace(" ", "_");
-            if (p.CanRead)   scopes.Add($"{target}:read");
-            if (p.CanUpdate) scopes.Add($"{target}:update");
-            if (p.CanDelete) scopes.Add($"{target}:delete");
+            return BadRequest(new { error = ex.Error, description = ex.Description });
         }
-        return scopes;
-    }
-
-    private static string BuildRedirectUri(string redirectUri, string code, string state)
-    {
-        var sep = redirectUri.Contains('?') ? '&' : '?';
-        var uri = $"{redirectUri}{sep}code={Uri.EscapeDataString(code)}";
-        if (!string.IsNullOrEmpty(state))
-            uri += $"&state={Uri.EscapeDataString(state)}";
-        return uri;
     }
 
     private static ContentResult Html(string html)
