@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "SourceClientId": "7fff71c85d264d0f86b7bd6081ad249b",
+    "TargetClientId": "8fb88d4f8f5b437997484599a81d1f79",
+    "CanRead": true,
+    "CanUpdate": false,
+    "CanDelete": false
+  },
+  {
+    "SourceClientId": "e4a6c8f0b2d4e6a8c0f2b4d6e8a0c2f4",
+    "TargetClientId": "8fb88d4f8f5b437997484599a81d1f79",
+    "CanRead": true,
+    "CanUpdate": false,
+    "CanDelete": false
+  }
+]

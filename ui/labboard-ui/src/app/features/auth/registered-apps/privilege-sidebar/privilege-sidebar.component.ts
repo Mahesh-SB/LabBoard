@@ -97,8 +97,7 @@ export class PrivilegeSidebarComponent implements OnChanges {
       next: () => {
         this.isSaving       = false;
         this.isEditMode     = false;
-        this.successMessage = 'Privileges saved.';
-        this.saved.emit();
+        this.successMessage = 'Privileges saved successfully.';
         this.loadPrivileges();
       },
       error: () => {
