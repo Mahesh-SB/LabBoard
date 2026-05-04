@@ -43,7 +43,8 @@ public class ServiceTokenService(
         {
             ["grant_type"]    = "client_credentials",
             ["client_id"]     = _options.ClientId,
-            ["client_secret"] = _options.ClientSecret
+            ["client_secret"] = _options.ClientSecret,
+            ["scope"]         = _options.Scope
         };
 
         try

@@ -85,8 +85,24 @@ public class OAuthService(
         if (!client.GrantTypes.Contains("client_credentials", StringComparer.OrdinalIgnoreCase))
             throw new OAuthException("unauthorized_client", "This client is not authorized for client_credentials grant.");
 
-        var privileges = await clientAppService.GetPrivilegesAsync(client.Id);
-        var scopes     = BuildScopesFromPrivileges(privileges);
+        var privileges    = await clientAppService.GetPrivilegesAsync(client.Id);
+        var allowedScopes = BuildScopesFromPrivileges(privileges);
+
+        // If client requested specific scopes, cap to the intersection with allowed scopes.
+        // If no scope requested, issue all allowed scopes.
+        List<string> scopes;
+        if (!string.IsNullOrWhiteSpace(request.Scope))
+        {
+            var requested = request.Scope.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            scopes = requested.Intersect(allowedScopes, StringComparer.OrdinalIgnoreCase).ToList();
+
+            if (scopes.Count == 0)
+                throw new OAuthException("invalid_scope", "None of the requested scopes are authorized for this client.");
+        }
+        else
+        {
+            scopes = allowedScopes;
+        }
 
         return tokenService.GenerateClientToken(client, scopes);
     }
