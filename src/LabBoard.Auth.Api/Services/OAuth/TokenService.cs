@@ -56,14 +56,16 @@ public class TokenService : ITokenService, IDisposable
     {
         var scopeString = string.Join(" ", scopes);
 
-        var claims = new[]
+        // One claim per scope value so policy-based RequireClaim checks work correctly
+        var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Sub, client.ClientId),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim("client_id",                  client.ClientId),
-            new Claim("app_name",                   client.AppName),
-            new Claim("scope",                      scopeString)
+            new(JwtRegisteredClaimNames.Sub, client.ClientId),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new("client_id", client.ClientId),
+            new("app_name",  client.AppName)
         };
+        foreach (var scope in scopes)
+            claims.Add(new Claim("scope", scope));
 
         var token = new JwtSecurityToken(
             issuer:             _jwt.Issuer,
