@@ -12,9 +12,12 @@ builder.Services.AddHttpClient();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
-// ServiceTokenService is a singleton so it can cache the token across requests
+// All services are singletons: ServiceTokenService and TicketService hold in-memory state;
+// JwtReaderService and UserDetailsService are stateless — singleton avoids captive dependency.
+builder.Services.AddSingleton<IJwtReaderService, JwtReaderService>();
 builder.Services.AddSingleton<IServiceTokenService, ServiceTokenService>();
-builder.Services.AddScoped<IUserDetailsService, UserDetailsService>();
+builder.Services.AddSingleton<IUserDetailsService, UserDetailsService>();
+builder.Services.AddSingleton<ITicketService, TicketService>();
 
 var app = builder.Build();
 
