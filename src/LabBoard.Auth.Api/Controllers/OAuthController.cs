@@ -132,7 +132,27 @@ public class OAuthController(
         if (!client.GrantTypes.Contains("client_credentials", StringComparer.OrdinalIgnoreCase))
             return BadRequest(new { error = "unauthorized_client", description = "This client is not authorized for client_credentials grant." });
 
-        return Ok(tokenService.GenerateClientToken(client));
+        var privileges = await clientAppService.GetPrivilegesAsync(client.Id);
+        var scopes = BuildScopesFromPrivileges(privileges);
+
+        return Ok(tokenService.GenerateClientToken(client, scopes));
+    }
+
+    private static List<string> BuildScopesFromPrivileges(ApiPrivilegeResponse? privileges)
+    {
+        if (privileges?.Privileges is not { Count: > 0 })
+            return [];
+
+        var scopes = new List<string>();
+        foreach (var p in privileges.Privileges)
+        {
+            // "User Management App" → "user_management_app"
+            var target = p.TargetAppName.ToLowerInvariant().Replace(" ", "_");
+            if (p.CanRead)   scopes.Add($"{target}:read");
+            if (p.CanUpdate) scopes.Add($"{target}:update");
+            if (p.CanDelete) scopes.Add($"{target}:delete");
+        }
+        return scopes;
     }
 
     private static string BuildRedirectUri(string redirectUri, string code, string state)

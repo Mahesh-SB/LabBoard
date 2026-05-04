@@ -52,18 +52,22 @@ public class TokenService : ITokenService, IDisposable
         };
     }
 
-    public TokenResponse GenerateClientToken(ClientAppResponse client)
+    public TokenResponse GenerateClientToken(ClientAppResponse client, List<string> scopes)
     {
-        var scopes = new List<string>();
+        var scopeString = string.Join(" ", scopes);
 
         var claims = new[]
         {
-            new Claim("scope", string.Join(" ", scopes))
+            new Claim(JwtRegisteredClaimNames.Sub, client.ClientId),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim("client_id",                  client.ClientId),
+            new Claim("app_name",                   client.AppName),
+            new Claim("scope",                      scopeString)
         };
 
         var token = new JwtSecurityToken(
             issuer:             _jwt.Issuer,
-            audience:           _jwt.Audience,
+            audience:           _jwt.InternalAudience,
             claims:             claims,
             notBefore:          DateTime.UtcNow,
             expires:            DateTime.UtcNow.AddSeconds(client.TokenExpiry),
@@ -74,7 +78,7 @@ public class TokenService : ITokenService, IDisposable
             AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
             TokenType   = "Bearer",
             ExpiresIn   = client.TokenExpiry,
-            Scope       = string.Join(" ", scopes)
+            Scope       = scopeString
         };
     }
 

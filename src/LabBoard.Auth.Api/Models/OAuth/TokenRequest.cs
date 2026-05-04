@@ -18,4 +18,7 @@ public class TokenRequest
 
     [FromForm(Name = "redirect_uri")]
     public string RedirectUri { get; set; } = string.Empty;
+
+    [FromForm(Name = "scope")]
+    public string? Scope { get; set; }
 }
