@@ -136,6 +136,7 @@
 .app-card {
   display: flex;
   align-items: stretch;
+  height: auto;
   background: rgba(255,255,255,0.58);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
@@ -156,20 +157,22 @@
 
 // ── Left identity panel ───────────────────────────────────────────────────────
 .card-identity {
-  width: 260px;
+  width: 280px;
   flex-shrink: 0;
-  padding: 12px 18px;
+  padding: 14px 18px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: flex-start;
-  gap: 6px;
+  gap: 12px;
 }
 
-.identity-logo-row {
+.identity-info {
   display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  width: 100%;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  flex: 1;
+  justify-content: center;
 }
 
 .app-avatar {
@@ -185,7 +188,7 @@
   color: white;
   flex-shrink: 0;
   box-shadow: 0 4px 14px rgba(108,99,255,0.38);
-  margin-bottom: 4px;
+  margin-top: 2px;
 }
 
 .app-name {
@@ -193,7 +196,7 @@
   font-weight: 800;
   color: #1a1a2e;
   letter-spacing: -0.2px;
-  line-height: 1.3;
+  line-height: 1.2;
   word-break: break-word;
 }
 
@@ -201,10 +204,8 @@
   font-size: 11.5px;
   color: #6b7280;
   line-height: 1.5;
-  flex: 1;
   min-width: 0;
   word-break: break-word;
-  padding-top: 2px;
 }
 
 .status-badge {
@@ -256,15 +257,18 @@
 
 // ── Right details + action panel ──────────────────────────────────────────────
 .card-details-panel {
-  flex: 1;
+  flex: 1 1 auto;
   min-width: 0;
-  padding: 10px 16px;
+  padding: 10px 16px 14px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   gap: 6px;
 }
 
 .card-details {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -365,12 +369,15 @@
   }
 }
 
-// ── Action row (above details) ────────────────────────────────────────────────
+// ── Action column (right side of details) ─────────────────────────────────────
 .card-action {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  padding-bottom: 6px;
+  justify-content: center;
+  flex-shrink: 0;
+  padding-left: 24px;
+  border-left: 1px solid rgba(109,40,217,0.08);
+  align-self: stretch;
 }
 
 

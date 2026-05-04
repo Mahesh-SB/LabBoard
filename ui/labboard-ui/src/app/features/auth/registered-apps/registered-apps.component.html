@@ -36,17 +36,17 @@
         @for (app of apps; track app.id) {
           <div class="app-card" [class.inactive]="!app.isActive">
 
-            <!-- ── Identity: name / logo+desc / badge ── -->
+            <!-- ── Identity: avatar / name + badge + desc ── -->
             <div class="card-identity">
-              <span class="app-name">{{ app.appName }}</span>
-              <div class="identity-logo-row">
-                <div class="app-avatar">{{ app.appName.charAt(0).toUpperCase() }}</div>
+              <div class="app-avatar">{{ app.appName.charAt(0).toUpperCase() }}</div>
+              <div class="identity-info">
+                <span class="app-name">{{ app.appName }}</span>
+                <span class="status-badge" [class.active]="app.isActive">
+                  <span class="status-dot"></span>
+                  {{ app.isActive ? 'Active' : 'Inactive' }}
+                </span>
                 <span class="app-desc">{{ app.appDescription || 'No description provided' }}</span>
               </div>
-              <span class="status-badge" [class.active]="app.isActive">
-                <span class="status-dot"></span>
-                {{ app.isActive ? 'Active' : 'Inactive' }}
-              </span>
             </div>
 
             <!-- ── Divider ──────────────────────────────── -->
@@ -54,13 +54,6 @@
 
             <!-- ── Details + action ─────────────────────── -->
             <div class="card-details-panel">
-
-              <!-- Privilege button at the top -->
-              <div class="card-action">
-                <button class="btn-privilege" (click)="openPrivileges(app)">
-                  🔑 <span>Privileges</span>
-                </button>
-              </div>
 
               <div class="card-details">
 
@@ -118,6 +111,13 @@
                   <span class="detail-label">Registered</span>
                   <span class="detail-value">{{ formatDate(app.createdAt) }}</span>
                 </div>
+              </div>
+
+              <!-- Privilege button at the bottom -->
+              <div class="card-action">
+                <button class="btn-privilege" (click)="openPrivileges(app)">
+                  🔑 <span>Privileges</span>
+                </button>
               </div>
 
             </div>
