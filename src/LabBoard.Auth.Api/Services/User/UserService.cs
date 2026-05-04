@@ -9,26 +9,12 @@ namespace LabBoard.Auth.Api.Services.User;
 public class UserService(IWebHostEnvironment env) : IUserService
 {
     private readonly string _storePath = Path.Combine(env.ContentRootPath, "..", "LabBoard.UserManagement.Api", "Database", "userStore.json");
-    private readonly JsonSerializerOptions _jsonOptions = new() { WriteIndented = true };
 
     public async Task<UserResponse?> GetByIdAsync(Guid id)
     {
         var users = await LoadAsync();
         var user = users.FirstOrDefault(u => u.Id == id);
         return user is null ? null : ToResponse(user);
-    }
-
-    public async Task<UserResponse?> GetByEmailAsync(string email)
-    {
-        var users = await LoadAsync();
-        var user = users.FirstOrDefault(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
-        return user is null ? null : ToResponse(user);
-    }
-
-    public async Task<IEnumerable<UserResponse>> GetAllAsync()
-    {
-        var users = await LoadAsync();
-        return users.Select(ToResponse);
     }
 
     public async Task<UserResponse?> ValidateCredentialsAsync(string email, string password)
@@ -41,28 +27,11 @@ public class UserService(IWebHostEnvironment env) : IUserService
         return user is null ? null : ToResponse(user);
     }
 
-    public async Task<bool> DeleteAsync(Guid id)
-    {
-        var users = await LoadAsync();
-        var user = users.FirstOrDefault(u => u.Id == id);
-        if (user is null) return false;
-
-        users.Remove(user);
-        await SaveAsync(users);
-        return true;
-    }
-
     private async Task<List<UserEntity>> LoadAsync()
     {
         if (!File.Exists(_storePath)) return [];
         var json = await File.ReadAllTextAsync(_storePath);
         return JsonSerializer.Deserialize<List<UserEntity>>(json) ?? [];
-    }
-
-    private async Task SaveAsync(List<UserEntity> users)
-    {
-        var json = JsonSerializer.Serialize(users, _jsonOptions);
-        await File.WriteAllTextAsync(_storePath, json);
     }
 
     private static string HashPassword(string password)
@@ -73,13 +42,13 @@ public class UserService(IWebHostEnvironment env) : IUserService
 
     private static UserResponse ToResponse(UserEntity user) => new()
     {
-        Id = user.Id,
-        FullName = user.FullName,
-        Gender = user.Gender,
-        Age = user.Age,
-        Email = user.Email,
-        Phone = user.Phone,
-        Role = user.Role,
+        Id        = user.Id,
+        FullName  = user.FullName,
+        Gender    = user.Gender,
+        Age       = user.Age,
+        Email     = user.Email,
+        Phone     = user.Phone,
+        Role      = user.Role,
         CreatedAt = user.CreatedAt
     };
 }
